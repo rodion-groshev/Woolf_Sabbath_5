@@ -27,7 +27,12 @@ class Address:
 
 
 class Record:
-    pass
+    def __init__(self, name, phone=None, email=None, address=None, birthday=None):
+        self.name = Name(name)
+        self.phones = []
+        self.emails = []
+        self.address = None
+        self.birthday = None
 
 
 class AddressBook:
