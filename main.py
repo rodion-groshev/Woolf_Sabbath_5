@@ -49,7 +49,7 @@ class Record:
         self.emails = []
         self.address = None
         self.birthday = None
-
+        
     if phone:
         self.add_phone(phone)
     if email:
