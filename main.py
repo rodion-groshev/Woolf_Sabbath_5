@@ -69,14 +69,5 @@ class Record:
         new_email = Field(email)
         self.emails.append(new_email)
 
-    @input_error
-    def add_address(self, address):
-        self.address = Field(address)
-        
-    @input_error
-    def add_birthday(self, birthday):
-        self.birthday = Field(birthday)
-
-
 class AddressBook:
     pass
