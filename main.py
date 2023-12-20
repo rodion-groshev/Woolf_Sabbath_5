@@ -3,6 +3,7 @@ from features.error_handler import BadBirthdayFormat, PhoneNumberIsMissing, Vali
 from prompt_toolkit import prompt
 from prompt_toolkit.shortcuts import CompleteStyle
 from prompt_toolkit.completion import WordCompleter
+import re
 
 
 class Field:
@@ -164,6 +165,12 @@ class AddressBook:
                 print(self.contacts[match])
         else:
             print(f"No contacts found for '{query}'.")
+
+    def find(self, name):
+        if name in self.contacts:
+            return self.contacts[name]
+        else:
+            return None
 
     def show_all(self):
         if self.contacts:
