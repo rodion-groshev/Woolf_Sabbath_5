@@ -3,6 +3,7 @@ from features.error_handler import BadBirthdayFormat, PhoneNumberIsMissing, Vali
 from prompt_toolkit import prompt
 from prompt_toolkit.shortcuts import CompleteStyle
 from prompt_toolkit.completion import WordCompleter
+import re
 
 
 class Field:
@@ -13,19 +14,46 @@ class Field:
         return str(self.value)
 
 
-class Name(Field):
-    pass
+class Name:
+    def __init__(self, first_name, last_name):
+        self.first_name = first_name.strip()
+        self.last_name = last_name.strip()
+
+        if not self.first_name or not self.last_name:
+            raise ValueError("First and last names cannot be empty")
 
 
-class Phone(Field):
-    pass
+class Phone:
+    def __init__(self, phone_number):
+        if not phone_number:
+            self.phone_number = None
+        elif self.validate_phone(phone_number):
+            self.phone_number = phone_number
+        else:
+            raise ValueError("Invalid phone number format.")
+
+    @staticmethod
+    def validate_phone(phone_number):
+        pattern = r"^\+?(\d{10,15})$"  # перевірка на довжину номера
+        return re.match(pattern, phone_number) is not None
 
 
-class Email(Field):
-    pass
+class Email:
+    def __init__(self, email_address):
+        if not email_address:
+            self.email_address = None
+        elif self.validate_email(email_address):
+            self.email_address = email_address
+        else:
+            raise ValueError("Invalid email format.")
+
+    @staticmethod
+    def validate_email(email_address):
+        pattern = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
+        return re.match(pattern, email_address) is not None
 
 
-class Birthday(Field):
+class Birthday:
     def __init__(self, value):
         if type(value) == str:
             self.value = datetime.strptime(value, "%d.%m.%Y")
@@ -44,8 +72,20 @@ class Birthday(Field):
             return False
 
 
-class Address(Field):
-    pass
+class Address:
+    def __init__(self, address):
+        if not address:
+            raise ValueError("The address cannot be empty.")
+
+    @staticmethod
+    def validate_address(address):
+        # Перевірка довжини адреси
+        if len(address) < 5 or len(address) > 100:
+            raise ValueError("Адреса повинна містити від 5 до 100 символів.")
+        # Перевірка на недопустимі символи
+        if any(char in address for char in "!@#$%^&*()"):
+            raise ValueError("The address contains invalid characters.")
+        return address.strip()
 
 
 class Record:
