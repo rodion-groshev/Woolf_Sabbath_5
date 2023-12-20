@@ -54,7 +54,7 @@ class Record:
         self.emails = []
         self.address = None
         self.birthday = None
-        
+
     if phone:
         self.add_phone(phone)
     if email:
@@ -73,7 +73,7 @@ class Record:
     def add_email(self, email):
         new_email = Field(email)
         self.emails.append(new_email)
-    
+
     @input_error
     def add_address(self, address):
         self.address = Field(address)
@@ -93,12 +93,137 @@ def parse_input(user_input):
     return cmd, *args
 
 
+def add_phone(args, book):
+    name, phone = args
+    record = book.find(name)
+    record.add_phone(phone)
+    return f"Phone: {phone} added to contact {name}."
+
+
+def add_email(args, book):
+    name, email = args
+    record = book.find(name)
+    record.add_email(email)
+    return f"Email: {email} added to contact {name}."
+
+
+def add_address(args, book):
+    name, address = args
+    record = book.find(name)
+    record.add_address(address)
+    return f"Address: {Address} added to contact {name}."
+
+
+def add_birthday(args, book):
+    name, birthday = args
+    record = book.find(name)
+    record.add_birthday(birthday)
+    return f"Birthday: {birthday} added to contact {name}."
+
+
+def edit_phone(args, book):
+    name, old_phone, new_phone = args
+    if name in book:
+        record = book.find(name)
+        record.edit_phone(old_phone, new_phone)
+        return "Contact updated."
+    else:
+        return "Contact not found"
+
+
+def edit_email(args, book):
+    name, old_email, new_email = args
+    if name in book:
+        record = book.find(name)
+        record.edit_email(old_email, new_email)
+        return "Contact updated."
+    else:
+        return "Contact not found"
+
+
+def edit_address(args, book):
+    name, address = args
+    if name in book:
+        record = book.find(name)
+        record.edit_address(address)
+        return "Contact updated."
+    else:
+        return "Contact not found"
+
+
+def edit_birthday(args, book):
+    name, birthday = args
+    if name in book:
+        record = book.find(name)
+        record.edit_birthday(birthday)
+        return "Contact updated."
+    else:
+        return "Contact not found"
+
+
+def show_all(book):
+    return "\n".join(f"{value}" for name, value in book.items())
+
+
+def show_phone(args, book):
+    name = args[0]
+    return book.show_phone(name)
+
+
+def show_email(args, book):
+    name = args[0]
+    return book.show_email(name)
+
+
+def show_address(args, book):
+    name = args[0]
+    return book.show_address(name)
+
+
+def show_birthday(args, book):
+    name = args[0]
+    return book.show_birthday(name)
+
+
+def delete_contact(args, book):
+    name = args[0]
+    return book.delete_contact(name)
+
+
+def delete_phone(args, book):
+    name, phone = args
+    record = book.find(name)
+    return record.delete_phone(phone)
+
+
+def delete_email(args, book):
+    name, email = args
+    record = book.find(name)
+    return record.delete_email(email)
+
+
+def delete_address(args, book):
+    name, address = args
+    record = book.find(name)
+    return record.delete_email(address)
+
+
+def delete_birthday(args, book):
+    name, birthday = args
+    record = book.find(name)
+    return record.delete_email(birthday)
+
+
+def upcoming_birthday(book):
+    return book.upcoming_birthday()
+
+
 def main():
     book = AddressBook()
     commands = ["add-contact", "add-phone", "add-email", "add-address", "add-birthday", "edit-phone", "edit-email",
                 "edit-address", "edit-birthday", "show-all", "show-phone", "show-email", "show-address",
                 "show-birthday", "delete-contact", "delete-phone", "delete-email", "delete-address", "delete-birthday",
-                "birthday", "exit"]
+                "birthday", "exit", "help"]
     word_completer = WordCompleter(commands, ignore_case=True)
 
     print("Welcome to the assistant bot!")
