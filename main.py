@@ -191,6 +191,12 @@ class AddressBook:
         contact.add_birthday(birthday)
         self.contacts[name] = contact
 
+    def find(self, name):
+        if name in self.contacts:
+            return self.contacts[name]
+        else:
+            return None
+
     def view_contact(self, name):
         if name in self.contacts:
             print(self.contacts[name])
