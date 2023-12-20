@@ -109,8 +109,34 @@ class Record:
             self.birthday = new_birthday
         else:
             raise BadBirthdayFormat("Invalid birthday format. Expected format: dd/mm/yyyy.")
+    
+    @input_error
+    def delete_phone(self, phone):
+        if phone in self.phones:
+            self.phones.remove(phone)
+        else:
+            raise PhoneNumberIsMissing("Phone number not found in the record.")
         
+    @input_error
+    def delete_email(self, email):
+        if email in self.emails:
+            self.emails.remove(email)
+        else:
+            raise ValidationException("Email not found in the record.")
+        
+    @input_error
+    def delete_address(self):
+        self.address = None
 
+    @input_error
+    def delete_birthday(self):
+        self.birthday = None  
+    
+    def __str__(self):
+        phones_str = ', '.join(str(phone) for phone in self.phones)
+        emails_str = ', '.join(str(email) for email in self.emails)
+
+        return f"Record(name: {self.name}, phones: [{phones_str}], emails: [{emails_str}], address: {self.address}, birthday: {self.birthday})"
 
 class AddressBook:
     def __init__(self):
