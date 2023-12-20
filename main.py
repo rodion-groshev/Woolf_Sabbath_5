@@ -1,4 +1,5 @@
 from datetime import datetime
+from features.error_handler import BadBirthdayFormat, PhoneNumberIsMissing, ValidationException
 from prompt_toolkit import prompt
 from prompt_toolkit.shortcuts import CompleteStyle
 from prompt_toolkit.completion import WordCompleter
@@ -81,7 +82,34 @@ class Record:
     @input_error
     def add_birthday(self, birthday):
         self.birthday = Field(birthday)
+    
+    @input_error
+    def edit_phone(self, old_phone, new_phone):
+        if old_phone in self.phones:
+            index = self.phones.index(old_phone)
+            self.phones[index] = new_phone
+        else:
+            raise PhoneNumberIsMissing("Phone number not found in the record.")
+    
+    @input_error
+    def edit_email(self, old_email, new_email):
+        if old_email in self.emails:
+            index = self.emails.index(old_email)
+            self.emails[index] = new_email
+        else:
+            raise ValidationException("Email not found in the record.")
 
+    @input_error
+    def edit_address(self, new_address):
+        self.address = Field(new_address)
+
+    @input_error
+    def edit_birthday(self, new_birthday):
+        if isinstance(new_birthday, Birthday):
+            self.birthday = new_birthday
+        else:
+            raise BadBirthdayFormat("Invalid birthday format. Expected format: dd/mm/yyyy.")
+        
 
 class AddressBook:
     pass
