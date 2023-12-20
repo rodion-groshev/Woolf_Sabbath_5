@@ -54,6 +54,33 @@ class Record:
         self.emails = []
         self.address = None
         self.birthday = None
+        
+    if phone:
+        self.add_phone(phone)
+    if email:
+        self.add_email(email)
+    if address:
+        self.add_address(address)
+    if birthday:
+        self.add_birthday(birthday)
+
+    @input_error
+    def add_phone(self, phone):
+        new_phone = Phone(phone)
+        self.phones.append(new_phone)
+
+    @input_error
+    def add_email(self, email):
+        new_email = Field(email)
+        self.emails.append(new_email)
+    
+    @input_error
+    def add_address(self, address):
+        self.address = Field(address)
+
+    @input_error
+    def add_birthday(self, birthday):
+        self.birthday = Field(birthday)
 
 
 class AddressBook:
