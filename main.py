@@ -13,19 +13,19 @@ class Field:
         return str(self.value)
 
 
-class Name:
+class Name(Field):
     pass
 
 
-class Phone:
+class Phone(Field):
     pass
 
 
-class Email:
+class Email(Field):
     pass
 
 
-class Birthday:
+class Birthday(Field):
     def __init__(self, value):
         if type(value) == str:
             self.value = datetime.strptime(value, "%d.%m.%Y")
@@ -44,7 +44,7 @@ class Birthday:
             return False
 
 
-class Address:
+class Address(Field):
     pass
 
 
@@ -82,7 +82,7 @@ class Record:
     @input_error
     def add_birthday(self, birthday):
         self.birthday = Field(birthday)
-    
+
     @input_error
     def edit_phone(self, old_phone, new_phone):
         if old_phone in self.phones:
@@ -90,7 +90,7 @@ class Record:
             self.phones[index] = new_phone
         else:
             raise PhoneNumberIsMissing("Phone number not found in the record.")
-    
+
     @input_error
     def edit_email(self, old_email, new_email):
         if old_email in self.emails:
@@ -109,39 +109,40 @@ class Record:
             self.birthday = new_birthday
         else:
             raise BadBirthdayFormat("Invalid birthday format. Expected format: dd/mm/yyyy.")
-    
+
     @input_error
     def delete_phone(self, phone):
         if phone in self.phones:
             self.phones.remove(phone)
         else:
             raise PhoneNumberIsMissing("Phone number not found in the record.")
-        
+
     @input_error
     def delete_email(self, email):
         if email in self.emails:
             self.emails.remove(email)
         else:
             raise ValidationException("Email not found in the record.")
-        
+
     @input_error
     def delete_address(self):
         self.address = None
 
     @input_error
     def delete_birthday(self):
-        self.birthday = None  
-    
+        self.birthday = None
+
     def __str__(self):
         phones_str = ', '.join(str(phone) for phone in self.phones)
         emails_str = ', '.join(str(email) for email in self.emails)
 
         return f"Record(name: {self.name}, phones: [{phones_str}], emails: [{emails_str}], address: {self.address}, birthday: {self.birthday})"
 
+
 class AddressBook:
     def __init__(self):
         self.contacts = {}
-        
+
     def add_contact(self, name, address, phone, email, birthday):
         contact = Record(name)
         contact.add_address(address)
@@ -274,6 +275,24 @@ def parse_input(user_input):
     cmd, *args = user_input.split()
     cmd = cmd.strip().lower()
     return cmd, *args
+
+
+def add_contact(book):
+    name = input("Enter the name: ")
+    phone = input("Enter the phone: ")
+    email = input("Enter email: ")
+    address = input("Enter the address")
+    birthday = input("Enter a birthday: ")
+    record = Record(name)
+    if phone:
+        record.add_phone(phone)
+    if email:
+        record.add_email(email)
+    if address:
+        record.add_address(address)
+    if birthday:
+        record.add_birthday(birthday)
+    book.add_contact(record)
 
 
 def add_phone(args, book):
