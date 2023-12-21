@@ -1,18 +1,15 @@
 from prompt_toolkit import prompt
 from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.shortcuts import CompleteStyle
-from features.storage import Storage
+from storage import Storage
 from base_commands import Commands
 from utils.input_reader import parse_input
-from book_object import AddressBook
 
 
 def main():
     read_data = Storage("temp")
-    if read_data:
-        book = read_data.read_from_disk()
-    else:
-        book = AddressBook()
+    book = read_data.read_from_disk()
+
     commands = ["add-contact", "add-phone", "add-email", "add-address", "add-birthday", "edit-phone", "edit-email",
                 "edit-address", "edit-birthday", "show-all", "show-contact", "show-phone", "show-email", "show-address",
                 "show-birthday", "delete-contact", "delete-phone", "delete-email", "delete-address", "delete-birthday",

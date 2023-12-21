@@ -1,5 +1,7 @@
 import pickle
 
+from book_object import AddressBook
+
 
 class Storage:
     def __init__(self, filename):
@@ -18,6 +20,6 @@ class Storage:
                 loaded_records = pickle.load(file)
             return loaded_records
         except FileNotFoundError:
-            return {}
+            return AddressBook()
         except Exception as e:
             return {}
