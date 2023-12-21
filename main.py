@@ -70,6 +70,8 @@ def main():
             print(class_command.delete_birthday(args, book))
         elif command == "birthday":
             print(class_command.upcoming_birthday(book))
+        elif command == "help":
+            print(class_command.help())
         else:
             print(f"Invalid command {command}.")
 

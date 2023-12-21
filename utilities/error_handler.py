@@ -17,6 +17,8 @@ class PhoneNumberIsMissing(Exception):
 class BadBirthdayFormat(Exception):
     pass
 
+class BadEmailFormat(Exception):
+    pass
 
 class NoteExists(Exception):
     pass
@@ -39,12 +41,14 @@ def input_error(func):
     def inner(*args, **kwargs):
         try:
             return func(*args, **kwargs)
+        except ValueError:
+            return "Format is incorrect. Write help and find correct format."
         except KeyExistInContacts as e:
             return f"This contact exists {e}."
         except KeyNotExistInContacts as e:
             return f"This contact does not exist {e}."
         except KeyError as e:
-            return f"This contact does not exist {e}."
+            return f"This contact does not exist {e}. You should add it."
         except IndexError:
             return f"Bad arguments {args[1:]}."
         except BadPhoneNumber as e:
@@ -53,6 +57,8 @@ def input_error(func):
             return f"This number does not exist {e}."
         except BadBirthdayFormat as e:
             return f"Birthday format '{e}' is incorrect. It should be DD.MM.YYYY."
+        except BadEmailFormat as e:
+            return f"Email format '{e}' is incorrect. It should be example@gmail.com. "
         except NoteExists as e:
             return f"Note already exists {e}."
         except NoteNotFound as e:
