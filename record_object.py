@@ -3,7 +3,7 @@ from contact_object import Name, Phone, Field, Birthday, Email, Address
 
 
 class Record:
-    def __init__(self, name, phone=None, email=None, address=None, birthday=None):
+    def __init__(self, name):
         self.name = Name(name)
         self.phones = []
         self.emails = []

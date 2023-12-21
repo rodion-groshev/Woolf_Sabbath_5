@@ -1,23 +1,28 @@
 from prompt_toolkit import prompt
 from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.shortcuts import CompleteStyle
-
+from features.storage import Storage
 from base_commands import Commands
 from utils.input_reader import parse_input
 from book_object import AddressBook
 
 
 def main():
-    book = AddressBook()
+    read_data = Storage("temp")
+    if read_data:
+        book = read_data.read_from_disk()
+    else:
+        book = AddressBook()
     commands = ["add-contact", "add-phone", "add-email", "add-address", "add-birthday", "edit-phone", "edit-email",
-                "edit-address", "edit-birthday", "show-all", "show-phone", "show-email", "show-address",
+                "edit-address", "edit-birthday", "show-all", "show-contact", "show-phone", "show-email", "show-address",
                 "show-birthday", "delete-contact", "delete-phone", "delete-email", "delete-address", "delete-birthday",
                 "birthday", "exit", "help"]
     word_completer = WordCompleter(commands, ignore_case=True)
 
     print("Welcome to the assistant bot!")
     while True:
-        user_input = prompt('Enter the command: ', completer=word_completer, complete_style=CompleteStyle.MULTI_COLUMN)
+        user_input = prompt('Enter the command: ', completer=word_completer,
+                            complete_style=CompleteStyle.MULTI_COLUMN)
         command, *args = parse_input(user_input)
         class_command = Commands()
 
@@ -45,6 +50,8 @@ def main():
             print(class_command.edit_birthday(args, book))
         elif command == "show-all":
             print(class_command.show_all(book))
+        elif command == "show-contact":
+            print(class_command.show_contact(args, book))
         elif command == "show-phone":
             print(class_command.show_phone(args, book))
         elif command == "show-email":
@@ -67,6 +74,8 @@ def main():
             print(class_command.upcoming_birthday(book))
         else:
             print(f"Invalid command {command}.")
+
+    read_data.save_to_disk(book)
 
 
 if __name__ == "__main__":

@@ -12,40 +12,44 @@ class AddressBook(UserDict):
     def show_all(self):
         if self.data:
             print("\nAll Contacts:")
-            for name, contact in self.data.items():
-                print(f"\n{name}:\n{contact}")
+            return "\n".join(
+                f"{name} - "
+                f"Phone(s): {', '.join([phone.value for phone in value.phones])}, "
+                f"E-mail(s): {', '.join([email.value for email in value.emails])}, "
+                f"Address: {value.address}, "
+                f"Birthday: {value.birthday}"
+                for name, value in self.data.items())
         else:
             print("No contacts in the address book.")
 
     def show_contact(self, name):
         if name in self.data:
             contact = self.data[name]
-            print(f"\n{name}:\n{contact}")
+            return (f"\n{name}:\nPhone(s): {', '.join([phone.value for phone in contact.phones])}, "
+                    f"E-mail(s): {', '.join([email.value for email in contact.emails if email != []])}, "
+                    f"Address: {contact.address}, Birthday: {contact.birthday}")
         else:
-            print(f"Contact '{name}' not found.")
+            return f"Contact '{name}' not found."
 
     def show_phone(self, name):
         if name in self.data:
             contact = self.data[name]
             if contact.phones:
-                print(f"\n{name}'s Phone Numbers:")
-                for phone in contact.phones:
-                    print(phone)
+                return f"{name}'s phone(s): {', '.join([phone.value for phone in contact.phones])}"
             else:
-                print(f"{name} has no phone numbers.")
+                return f"{name} has no phone numbers."
         else:
-            print(f"Contact '{name}' not found.")
+            return f"Contact '{name}' not found."
 
     def show_email(self, name):
         if name in self.data:
             contact = self.data[name]
             if contact.emails:
-                print(f"\n{name}'s Email:")
-                print(contact.emails)
+                return f"{name}'s e-mail(s): {', '.join([email.value for email in contact.emails if email != []])}"
             else:
-                print(f"{name} has no email address.")
+                return f"{name} has no email address."
         else:
-            print(f"Contact '{name}' not found.")
+            return f"Contact '{name}' not found."
 
     def show_address(self, name):
         if name in self.data:

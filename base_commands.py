@@ -3,7 +3,6 @@ from record_object import Record
 
 
 class Commands:
-
     @input_error
     def add_contact(self, book):
         name = input("Enter the name: ")
@@ -96,6 +95,11 @@ class Commands:
     @input_error
     def show_all(self, book):
         return book.show_all()
+
+    @input_error
+    def show_contact(self, args, book):
+        name = args[0]
+        return book.show_contact(name)
 
     @input_error
     def show_phone(self, args, book):
