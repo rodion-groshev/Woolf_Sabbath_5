@@ -1,5 +1,5 @@
-from features.error_handler import input_error
-from record_object import Record
+from utilities.error_handler import input_error
+from base_objects.record_object import Record
 
 
 class Commands:
@@ -154,7 +154,8 @@ class Commands:
     def upcoming_birthday(self, book):
         return book.upcoming_birthday()
 
-    def help(self):
+    @staticmethod
+    def help():
         print("\nAvailable Commands:")
         print("--------------------")
         print("add-contact <name> <address> <phone> <email> <birthday>")

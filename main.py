@@ -1,9 +1,16 @@
 from prompt_toolkit import prompt
 from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.shortcuts import CompleteStyle
+
 from storage import Storage
 from base_commands import Commands
 from input_reader import parse_input
+
+
+from base_objects.commands_object import Commands
+from utilities.input_reader import parse_input
+from utilities.storage import Storage
+
 
 
 def main():
@@ -69,6 +76,8 @@ def main():
             print(class_command.delete_birthday(args, book))
         elif command == "birthday":
             print(class_command.upcoming_birthday(book))
+        elif command == "help":
+            print(class_command.help())
         else:
             print(f"Invalid command {command}.")
 

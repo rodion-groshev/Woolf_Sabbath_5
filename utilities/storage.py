@@ -1,6 +1,5 @@
 import pickle
-
-from book_object import AddressBook
+from base_objects.book_object import AddressBook
 
 
 class Storage:

@@ -1,5 +1,5 @@
-from features.error_handler import PhoneNumberIsMissing, ValidationException, BadBirthdayFormat
-from contact_object import Name, Phone, Field, Birthday, Email, Address
+from utilities.error_handler import PhoneNumberIsMissing, ValidationException, BadBirthdayFormat
+from base_objects.contact_object import Name, Phone, Field, Birthday, Email, Address
 
 
 class Record:
