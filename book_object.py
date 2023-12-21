@@ -39,9 +39,9 @@ class AddressBook(UserDict):
     def show_email(self, name):
         if name in self.data:
             contact = self.data[name]
-            if contact.email:
+            if contact.emails:
                 print(f"\n{name}'s Email:")
-                print(contact.email)
+                print(contact.emails)
             else:
                 print(f"{name} has no email address.")
         else:

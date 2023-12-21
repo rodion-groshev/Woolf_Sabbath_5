@@ -1,5 +1,5 @@
 from features.error_handler import PhoneNumberIsMissing, ValidationException, BadBirthdayFormat
-from contact_object import Name, Phone, Field, Birthday
+from contact_object import Name, Phone, Field, Birthday, Email, Address
 
 
 class Record:
@@ -19,10 +19,10 @@ class Record:
         self.emails.append(new_email)
 
     def add_address(self, address):
-        self.address = Field(address)
+        self.address = Address(address)
 
     def add_birthday(self, birthday):
-        self.birthday = Field(birthday)
+        self.birthday = Birthday(birthday)
 
     def edit_phone(self, old_phone, new_phone):
         if old_phone in self.phones:
