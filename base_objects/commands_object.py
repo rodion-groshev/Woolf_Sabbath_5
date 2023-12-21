@@ -1,5 +1,5 @@
-from features.error_handler import input_error
-from record_object import Record
+from utilities.error_handler import input_error
+from base_objects.record_object import Record
 
 
 class Commands:
