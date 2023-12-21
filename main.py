@@ -1,14 +1,17 @@
 from prompt_toolkit import prompt
-from prompt_toolkit.shortcuts import CompleteStyle
 from prompt_toolkit.completion import WordCompleter
+from prompt_toolkit.shortcuts import CompleteStyle
 
-from Woolf_Sabbath_5.utils.input_reader import parse_input
-from book_object import AddressBook
-from command import add_contact, add_phone, add_email, add_address, add_birthday, edit_phone, \
+from base_commands import add_contact, add_phone, add_email, add_address, add_birthday, edit_phone, \
     edit_email, edit_address, edit_birthday, show_all, show_phone, show_email, show_address, show_birthday, \
     delete_contact, delete_phone, delete_email, delete_address, delete_birthday, upcoming_birthday
+from utils.input_reader import parse_input
+from book_object import AddressBook
 
 
+# TO RUN FILE WRITE python main.py
+# TO RUN FILE WRITE python main.py
+# TO RUN FILE WRITE python main.py
 
 def main():
     book = AddressBook()
@@ -26,6 +29,7 @@ def main():
         if command == "exit":
             print("Good bye!")
             break
+
         elif command == "add-contact":
             print(add_contact(book))
         elif command == "add-phone":
@@ -46,7 +50,7 @@ def main():
             print(edit_birthday(args, book))
         elif command == "show-all":
             print(show_all(book))
-        elif command == "show_phone":
+        elif command == "show-phone":
             print(show_phone(book))
         elif command == "show-email":
             print(show_email(book))
