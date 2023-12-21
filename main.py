@@ -3,7 +3,7 @@ from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.shortcuts import CompleteStyle
 from features.storage import Storage
 from base_commands import Commands
-from utils.input_reader import parse_input
+from input_reader import parse_input
 from book_object import AddressBook
 
 
