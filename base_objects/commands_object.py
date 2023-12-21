@@ -154,7 +154,8 @@ class Commands:
     def upcoming_birthday(self, book):
         return book.upcoming_birthday()
 
-    def help(self):
+    @staticmethod
+    def help():
         print("\nAvailable Commands:")
         print("--------------------")
         print("add-contact <name> <address> <phone> <email> <birthday>")
