@@ -79,7 +79,7 @@ class AddressBook(UserDict):
 
         for name, contact in self.data.items():
             if contact.birthday:
-                birthday = contact.birthday.date
+                birthday = contact.birthday.value.date()
                 next_birthday = datetime(today.year, birthday.month, birthday.day)
 
                 if next_birthday < today:
@@ -89,7 +89,7 @@ class AddressBook(UserDict):
 
                 if 0 < days_until_birthday <= days:
                     upcoming_birthdays.append((name, contact.birthday))
-
+        print(upcoming_birthdays)
         return upcoming_birthdays
 
     def delete_contact(self, name):
