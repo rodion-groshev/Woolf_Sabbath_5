@@ -10,10 +10,13 @@ class Commands:
     @input_error
     def add_contact(self, book):
         name = input("Enter the name: ")
+        surname = input("Enter the surname (optional): ")
         phone = input("Enter the phone: ")
         email = input("Enter email: ")
         address = input("Enter the address: ")
         birthday = input("Enter a birthday: ")
+        if surname:
+            name = name + " " + surname
         record = Record(name)
         if phone:
             record.add_phone(phone)
@@ -24,7 +27,7 @@ class Commands:
         if birthday:
             record.add_birthday(birthday)
         book.add_contact(record)
-        return f"Contact {name} added successfully."
+        return f"Contact {name} {surname if surname else ''} added successfully."
 
     @input_error
     def add_phone(self, args, book):
@@ -45,9 +48,11 @@ class Commands:
 
     @input_error
     def add_address(self, args, book):
-        name, *address = args
+        name, *address_words = args
         record = book.find(name)
-        record.add_address(*address)
+        address = ' '.join(address_words)
+        record.add_address(address)
+
         return f"Address: {address} added to contact {name}."
 
     @input_error
@@ -117,32 +122,32 @@ class Commands:
 
     @input_error
     def show_contact(self, args, book):
-        name = args[:]
+        name = " ".join(args)
         return book.show_contact(name)
 
     @input_error
     def show_phone(self, args, book):
-        name = args[:]
+        name = " ".join(args)
         return book.show_phone(name)
 
     @input_error
     def show_email(self, args, book):
-        name = args[:]
+        name = " ".join(args)
         return book.show_email(name)
 
     @input_error
     def show_address(self, args, book):
-        name = args[:]
+        name = " ".join(args)
         return book.show_address(name)
 
     @input_error
     def show_birthday(self, args, book):
-        name = args[:]
+        name = " ".join(args)
         return book.show_birthday(name)
 
     @input_error
     def delete_contact(self, args, book):
-        name = args[:]
+        name = " ".join(args)
         return book.delete_contact(name)
 
     @input_error

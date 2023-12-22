@@ -44,19 +44,19 @@ def input_error(func):
         try:
             return func(*args, **kwargs)
         except ValueError:
-            return "Format is incorrect. Write help and find correct format."
+            return "Format is incorrect. Use help to find correct format."
         except KeyExistInContacts as e:
             return f"This contact exists {e}."
         except KeyNotExistInContacts as e:
-            return f"This contact does not exist {e}."
+            return f"This contact does not exist {e}. You should add it."
         except KeyError as e:
             return f"This contact does not exist {e}. You should add it."
         except IndexError:
             return f"Bad arguments {args[1:]}."
         except BadPhoneNumber as e:
-            return f"The phone number {e} does not match the requirements. It should be +380*********."
+            return f"Phone format '{e}' is incorrect. It should be +380*********."
         except PhoneNumberIsMissing as e:
-            return f"This number does not exist {e}."
+            return f"This number does not exist {e}. You should add it."
         except BadBirthdayFormat as e:
             return f"Birthday format '{e}' is incorrect. It should be DD.MM.YYYY."
         except BadEmailFormat as e:
