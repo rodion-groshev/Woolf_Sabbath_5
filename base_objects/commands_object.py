@@ -20,7 +20,7 @@ class Commands:
             record.add_address(address)
         if birthday:
             record.add_birthday(birthday)
-
+            
         book.add_contact(record)
         return f"Contact {name} added successfully."
 
@@ -222,13 +222,11 @@ class Commands:
         print("delete-address <name>")
         print("delete-birthday <name>")
         print("birthday")
-        
         print("add-note <id> <note>")
         print("del-note <id>")
         print("edit-note <id>")
         print("search-note <id> ")
         print("read-notes-all")
         # print("add-note <id> <note>")
-
         print("exit")
         print("help")
