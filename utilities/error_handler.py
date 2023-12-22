@@ -17,8 +17,10 @@ class PhoneNumberIsMissing(Exception):
 class BadBirthdayFormat(Exception):
     pass
 
+
 class BadEmailFormat(Exception):
     pass
+
 
 class NoteExists(Exception):
     pass
@@ -52,7 +54,7 @@ def input_error(func):
         except IndexError:
             return f"Bad arguments {args[1:]}."
         except BadPhoneNumber as e:
-            return f"The phone number {e} does not match the requirements."
+            return f"The phone number {e} does not match the requirements. It should be +380*********."
         except PhoneNumberIsMissing as e:
             return f"This number does not exist {e}."
         except BadBirthdayFormat as e:

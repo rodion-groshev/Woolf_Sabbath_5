@@ -1,9 +1,12 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
+base_objects/__pycache__
+utilities/__pycache__
+temp.pkl
 *.py[cod]
 *$py.class
 allure_report
-temp.pkl
+
 # C extensions
 *.so
 

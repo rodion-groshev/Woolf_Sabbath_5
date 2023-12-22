@@ -1,5 +1,6 @@
 import re
 from datetime import datetime
+from utilities.error_handler import BadPhoneNumber
 
 
 class Field:
@@ -16,22 +17,25 @@ class Name(Field):
 
 
 class Phone(Field):
-    def __init__(self, number):
-        self.number = number
+    def __init__(self, value):
+        super().__init__(value)
+        if not self.validate_phone():
+            raise BadPhoneNumber(value)
 
     def validate_phone(self):
-        phone_pattern = re.compile(r'^\+?[1-9]\d{1,14}$')
-        return bool(re.match(phone_pattern, self.number))
+        phone_pattern = re.compile(r'^\+38\d{9,10}$')
+        return bool(re.match(phone_pattern, self.value))
+
 
 class Email(Field):
     def __init__(self, email):
         super().__init__(email)
-        if not self.validate_email(email):
+        if not self.validate_email():
             raise ValueError("Invalid email format.")
 
-    def validate_email(email):
+    def validate_email(self):
         pattern = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
-        return re.match(pattern, email) is not None
+        return re.match(pattern, self.value) is not None
 
 
 class Birthday:

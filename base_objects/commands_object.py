@@ -3,6 +3,7 @@ from datetime import datetime
 from base_objects.contact_object import Email
 from utilities.error_handler import input_error, BadPhoneNumber, BadEmailFormat, BadBirthdayFormat
 from base_objects.record_object import Record
+from utilities.help_message import help_message
 
 
 class Commands:
@@ -13,7 +14,6 @@ class Commands:
         email = input("Enter email: ")
         address = input("Enter the address: ")
         birthday = input("Enter a birthday: ")
-
         record = Record(name)
         if phone:
             record.add_phone(phone)
@@ -23,7 +23,6 @@ class Commands:
             record.add_address(address)
         if birthday:
             record.add_birthday(birthday)
-
         book.add_contact(record)
         return f"Contact {name} added successfully."
 
@@ -40,7 +39,7 @@ class Commands:
         record = book.find(name)
         email_pattern = re.compile(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
         if not re.match(email_pattern, email):
-            raise BadEmailFormat("Invalid email format. It should be example@gmail.com.")
+            raise BadEmailFormat(email)
         record.add_email(email)
         return f"Email: {email} added to contact {name}."
 
@@ -58,7 +57,7 @@ class Commands:
         try:
             datetime.strptime(birthday, "%d.%m.%Y")
         except ValueError:
-            raise BadBirthdayFormat("Invalid birthday format. Expected format: dd/mm/yyyy.")
+            raise BadBirthdayFormat(birthday)
         record.add_birthday(birthday)
         return f"Birthday: {birthday} added to contact {name}."
 
@@ -67,9 +66,9 @@ class Commands:
         name, old_phone, new_phone = args
         if name in book:
             record = book.find(name)
-            phone_pattern = re.compile(r'^\+?[1-9]\d{1,14}$')
+            phone_pattern = re.compile(r'^\+38\d{9,10}$')
             if not re.match(phone_pattern, new_phone):
-                raise BadPhoneNumber("Invalid phone number format. It should be +380*********.")
+                raise BadPhoneNumber(new_phone)
             record.edit_phone(old_phone, new_phone)
             return "Contact updated."
         else:
@@ -82,7 +81,7 @@ class Commands:
             record = book.find(name)
             email_pattern = re.compile(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
             if not re.match(email_pattern, new_email):
-                raise BadEmailFormat()
+                raise BadEmailFormat(new_email)
             record.edit_email(Email(old_email), Email(new_email))
             return "Contact updated."
         else:
@@ -106,7 +105,7 @@ class Commands:
             try:
                 datetime.strptime(birthday, "%d.%m.%Y")
             except ValueError:
-                raise BadBirthdayFormat("Invalid birthday format. Expected format: dd/mm/yyyy.")
+                raise BadBirthdayFormat(birthday)
             record.edit_birthday(birthday)
             return "Contact updated."
         else:
@@ -168,7 +167,7 @@ class Commands:
     def delete_birthday(self, args, book):
         name, birthday = args
         record = book.find(name)
-        return record.delete_email(birthday)
+        return record.delete_birthday(birthday)
 
     @input_error
     def upcoming_birthday(self, book):
@@ -176,27 +175,4 @@ class Commands:
 
     @staticmethod
     def help():
-        print("\nAvailable Commands:")
-        print("--------------------")
-        print("add-contact <name> <address> <phone> <email> <birthday>")
-        print("add-phone <name> <phone>")
-        print("add-email <name> <email>")
-        print("add-address <name> <address>")
-        print("add-birthday <name> <birthday>")
-        print("edit-phone <name> <old_phone> <new_phone>")
-        print("edit-email <name> <old_email> <new_email>")
-        print("edit-address <name> <new_address>")
-        print("edit-birthday <name> <new_birthday>")
-        print("show-all")
-        print("show-phone <name>")
-        print("show-email <name>")
-        print("show-address <name>")
-        print("show-birthday <name>")
-        print("delete-contact <name>")
-        print("delete-phone <name> <phone>")
-        print("delete-email <name> <email>")
-        print("delete-address <name>")
-        print("delete-birthday <name>")
-        print("birthday")
-        print("exit")
-        print("help")
+        return help_message()
