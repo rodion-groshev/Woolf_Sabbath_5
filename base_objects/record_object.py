@@ -4,8 +4,9 @@ from base_objects.contact_object import Name, Phone, Field, Birthday, Email, Add
 
 
 class Record:
-    def __init__(self, name):
+    def __init__(self, name, surname=''):
         self.name = Name(name)
+        self.surname = surname
         self.phones = []
         self.emails = []
         self.address = None

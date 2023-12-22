@@ -10,11 +10,12 @@ class Commands:
     @input_error
     def add_contact(self, book):
         name = input("Enter the name: ")
+        surname = input("Enter the surname (optional): ")
         phone = input("Enter the phone: ")
         email = input("Enter email: ")
         address = input("Enter the address: ")
         birthday = input("Enter a birthday: ")
-        record = Record(name)
+        record = Record(name, surname)
         if phone:
             record.add_phone(phone)
         if email:
@@ -24,7 +25,7 @@ class Commands:
         if birthday:
             record.add_birthday(birthday)
         book.add_contact(record)
-        return f"Contact {name} added successfully."
+        return f"Contact {name} {surname if surname else ''} added successfully."
 
     @input_error
     def add_phone(self, args, book):
@@ -45,8 +46,9 @@ class Commands:
 
     @input_error
     def add_address(self, args, book):
-        name, address = args
+        name, *address_words = args
         record = book.find(name)
+        address = ' '.join(address_words)
         record.add_address(address)
         return f"Address: {address} added to contact {name}."
 
