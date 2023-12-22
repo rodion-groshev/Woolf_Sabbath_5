@@ -26,12 +26,12 @@ class Phone(Field):
 class Email(Field):
     def __init__(self, email):
         super().__init__(email)
-        if not self.validate_email():
+        if not self.validate_email(email):
             raise ValueError("Invalid email format.")
 
-    def validate_email(self):
+    def validate_email(email):
         pattern = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
-        return re.match(pattern, self.value) is not None
+        return re.match(pattern, email) is not None
 
 
 class Birthday:
