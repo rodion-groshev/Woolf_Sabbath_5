@@ -45,9 +45,9 @@ class Commands:
 
     @input_error
     def add_address(self, args, book):
-        name, address = args
+        name, *address = args
         record = book.find(name)
-        record.add_address(address)
+        record.add_address(*address)
         return f"Address: {address} added to contact {name}."
 
     @input_error
@@ -89,10 +89,10 @@ class Commands:
 
     @input_error
     def edit_address(self, args, book):
-        name, address = args
+        name, *address = args
         if name in book:
             record = book.find(name)
-            record.edit_address(address)
+            record.edit_address(*address)
             return "Contact updated."
         else:
             return "Contact not found"
@@ -117,32 +117,32 @@ class Commands:
 
     @input_error
     def show_contact(self, args, book):
-        name = args[0]
+        name = args[:]
         return book.show_contact(name)
 
     @input_error
     def show_phone(self, args, book):
-        name = args[0]
+        name = args[:]
         return book.show_phone(name)
 
     @input_error
     def show_email(self, args, book):
-        name = args[0]
+        name = args[:]
         return book.show_email(name)
 
     @input_error
     def show_address(self, args, book):
-        name = args[0]
+        name = args[:]
         return book.show_address(name)
 
     @input_error
     def show_birthday(self, args, book):
-        name = args[0]
+        name = args[:]
         return book.show_birthday(name)
 
     @input_error
     def delete_contact(self, args, book):
-        name = args[0]
+        name = args[:]
         return book.delete_contact(name)
 
     @input_error
