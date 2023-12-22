@@ -1,10 +1,10 @@
 from utilities.error_handler import input_error
 from base_objects.record_object import Record
-
+from base_objects.note_object import Note
 
 class Commands:
     @input_error
-    def add_contact(self, book):
+    def add_contact(self, book,):
         name = input("Enter the name: ")
         phone = input("Enter the phone: ")
         email = input("Enter email: ")
@@ -151,9 +151,54 @@ class Commands:
         return record.delete_email(birthday)
 
     @input_error
-    def upcoming_birthday(self, book):
-        return book.upcoming_birthday()
+    def add_note(self, args):
+        note_text = args.text
+        self.note.add_record(Note(note_text))
+        return f"Note '{note_text}' added successfully."
 
+    @input_error
+    def del_note(self, args):
+        note_id = int(args.id)
+        try:
+            self.note.remove_record(note_id)
+            return f"Note id {note_id} was removed."
+        except IndexError:
+            return f"Note with id {note_id} not found."
+
+    @input_error
+    def edit_note(self, args):
+        note_id = int(args.id)
+        try:
+            note = self.note.data[note_id]
+            if args.text:
+                note.value = args.text
+            return f"Note id {note_id} updated."
+        except IndexError:
+            return f"Note with id {note_id} not found."
+
+    @input_error
+    def search_note(self, args):
+        if args.tag:
+            matching_records = self.note.search_by_tag(args.tag)
+            return "\n".join(
+                [f"{index}. {record}" for index, record in matching_records.items()]
+            )
+        elif args.query:
+            return "\n".join(
+                [
+                    f"{index}. {record}"
+                    for index, record in self.note.search_records(args.query).items()
+                ]
+            )
+        else:
+            return "Please provide a search query or tag."
+
+    @input_error
+    def read_note(self):
+        return self.note.print_all_notes()
+    
+    
+    
     def help(self):
         print("\nAvailable Commands:")
         print("--------------------")
@@ -177,5 +222,13 @@ class Commands:
         print("delete-address <name>")
         print("delete-birthday <name>")
         print("birthday")
+        
+        print("add-note <id> <note>")
+        print("del-note <id>")
+        print("edit-note <id>")
+        print("search-note <id> ")
+        print("read-notes-all")
+        # print("add-note <id> <note>")
+
         print("exit")
         print("help")

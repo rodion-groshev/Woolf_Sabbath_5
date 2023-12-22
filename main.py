@@ -1,8 +1,10 @@
 from prompt_toolkit import prompt
 from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.shortcuts import CompleteStyle
+from base_objects import note_object
 
 from base_objects.commands_object import Commands
+from base_objects.contact_object import Note
 from utilities.input_reader import parse_input
 from utilities.storage import Storage
 
@@ -14,7 +16,7 @@ def main():
     commands = ["add-contact", "add-phone", "add-email", "add-address", "add-birthday", "edit-phone", "edit-email",
                 "edit-address", "edit-birthday", "show-all", "show-contact", "show-phone", "show-email", "show-address",
                 "show-birthday", "delete-contact", "delete-phone", "delete-email", "delete-address", "delete-birthday",
-                "birthday", "exit", "help"]
+                "birthday", "exit", "help", "add_note",  "del_note", "edit_note", "search-note", "read-note", "print-all-notes",]
     word_completer = WordCompleter(commands, ignore_case=True)
 
     print("Welcome to the assistant bot!")
@@ -68,8 +70,18 @@ def main():
             print(class_command.delete_address(args, book))
         elif command == "delete-birthday":
             print(class_command.delete_birthday(args, book))
-        elif command == "birthday":
-            print(class_command.upcoming_birthday(book))
+        elif command == "add-note":
+            print(class_command.add_note(args))
+        elif command == "del-note":
+            print(class_command.del_note(args))
+        elif command == "edit-note":
+            print(class_command.edit_note(args))
+        elif command == "read-note":
+            print(class_command.read_note(args))
+        elif command == "search-note":
+            print(class_command.search_note(args))  
+        elif command == "print-all-notes":
+            print(class_command.print_all_notes(args))         
         else:
             print(f"Invalid command {command}.")
 

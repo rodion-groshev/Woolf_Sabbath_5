@@ -1,6 +1,8 @@
 import re
 from datetime import datetime
 
+from base_objects.val_inp import StringValueInp
+
 
 class Field:
     def __init__(self, value):
@@ -71,3 +73,19 @@ class Address(Field):
         if any(char in address for char in "!@#$%^&*()"):
             raise ValueError("The address contains invalid characters.")
         return address.strip()
+
+
+class Note(StringValueInp):
+    def __init__(self, text, tags=None):
+        super().__init__(text)
+        self.tags = tags or []
+
+    def __str__(self):
+        tag_string = ', '.join(self.tags)
+        return f"{self.value} [Tags: {tag_string}]"
+
+    def has_tag(self, tag):
+        return tag in self.tags
+
+    def validate(self, value):
+        return value
