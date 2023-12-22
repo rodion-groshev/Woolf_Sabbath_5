@@ -27,18 +27,26 @@ class Commands:
         if birthday:
             record.add_birthday(birthday)
         book.add_contact(record)
-        return f"Contact {name} {surname if surname else ''} added successfully."
+        return f"Contact {name} added successfully."
 
     @input_error
     def add_phone(self, args, book):
-        name, phone = args
+        if len(args) == 3:
+            name = args[0] + " " + args[1]
+            phone = args[-1]
+        else:
+            name, phone = args
         record = book.find(name)
         record.add_phone(phone)
         return f"Phone: {phone} added to contact {name}."
 
     @input_error
     def add_email(self, args, book):
-        name, email = args
+        if len(args) == 3:
+            name = args[0] + " " + args[1]
+            email = args[-1]
+        else:
+            name, email = args
         record = book.find(name)
         email_pattern = re.compile(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
         if not re.match(email_pattern, email):
@@ -57,7 +65,12 @@ class Commands:
 
     @input_error
     def add_birthday(self, args, book):
-        name, birthday = args
+        if len(args) == 3:
+            name = args[0] + " " + args[1]
+            birthday = args[-1]
+        else:
+            name, birthday = args
+
         record = book.find(name)
         try:
             datetime.strptime(birthday, "%d.%m.%Y")
@@ -68,7 +81,13 @@ class Commands:
 
     @input_error
     def edit_phone(self, args, book):
-        name, old_phone, new_phone = args
+        if len(args) == 4:
+            name = args[0] + " " + args[1]
+            old_phone = args[-2]
+            new_phone = args[-1]
+        else:
+            name, old_phone, new_phone = args
+
         if name in book:
             record = book.find(name)
             phone_pattern = re.compile(r'^\+38\d{9,10}$')
@@ -81,7 +100,12 @@ class Commands:
 
     @input_error
     def edit_email(self, args, book):
-        name, old_email, new_email = args
+        if len(args) == 4:
+            name = args[0] + " " + args[1]
+            old_email = args[-2]
+            new_email = args[-1]
+        else:
+            name, old_email, new_email = args
         if name in book:
             record = book.find(name)
             email_pattern = re.compile(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
@@ -104,7 +128,12 @@ class Commands:
 
     @input_error
     def edit_birthday(self, args, book):
-        name, birthday = args
+        if len(args) == 3:
+            name = args[0] + " " + args[1]
+            birthday = args[-1]
+        else:
+            name, birthday = args
+
         if name in book:
             record = book.find(name)
             try:
@@ -152,25 +181,45 @@ class Commands:
 
     @input_error
     def delete_phone(self, args, book):
-        name, phone = args
+        if len(args) == 3:
+            name = args[0] + " " + args[1]
+            phone = args[-1]
+        else:
+            name, phone = args
+
         record = book.find(name)
         return record.delete_phone(phone)
 
     @input_error
     def delete_email(self, args, book):
-        name, email = args
+        if len(args) == 3:
+            name = args[0] + " " + args[1]
+            email = args[-1]
+        else:
+            name, email = args
+
         record = book.find(name)
         return record.delete_email(email)
 
     @input_error
     def delete_address(self, args, book):
-        name, address = args
+        if len(args) == 3:
+            name = args[0] + " " + args[1]
+            address = args[-1]
+        else:
+            name, address = args
+
         record = book.find(name)
         return record.delete_email(address)
 
     @input_error
     def delete_birthday(self, args, book):
-        name, birthday = args
+        if len(args) == 3:
+            name = args[0] + " " + args[1]
+            birthday = args[-1]
+        else:
+            name, birthday = args
+
         record = book.find(name)
         return record.delete_birthday(birthday)
 
