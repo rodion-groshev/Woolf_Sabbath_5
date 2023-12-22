@@ -176,7 +176,7 @@ class Commands:
 
     @staticmethod
     def help():
-        print("\nAvailable Commands:")
+        print("\n\033[0;32mAvailable Commands:")
         print("--------------------")
         print("add-contact <name> <address> <phone> <email> <birthday>")
         print("add-phone <name> <phone>")
@@ -200,3 +200,4 @@ class Commands:
         print("birthday")
         print("exit")
         print("help")
+        print("\033[0m")
