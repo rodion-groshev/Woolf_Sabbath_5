@@ -2,14 +2,17 @@ from prompt_toolkit import prompt
 from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.shortcuts import CompleteStyle
 
-from storage import Storage
-from base_commands import Commands
 from input_reader import parse_input
-
 
 from base_objects.commands_object import Commands
 from utilities.input_reader import parse_input
 from utilities.storage import Storage
+from base_objects.book_object import AddressBook
+
+from rich.console import Console
+from rich.table import Table
+from rich import box
+
 
 
 
@@ -22,6 +25,7 @@ def main():
                 "show-birthday", "delete-contact", "delete-phone", "delete-email", "delete-address", "delete-birthday",
                 "birthday", "exit", "help"]
     word_completer = WordCompleter(commands, ignore_case=True)
+    console = Console()
 
     print("Welcome to the assistant bot!")
     while True:
@@ -75,7 +79,26 @@ def main():
         elif command == "delete-birthday":
             print(class_command.delete_birthday(args, book))
         elif command == "birthday":
-            print(class_command.upcoming_birthday(book))
+            upcoming_birthdays = class_command.upcoming_birthday(args, book)
+            if upcoming_birthdays:
+                table = Table(show_header=True, header_style="bold magenta", box=box.SIMPLE_HEAVY)
+                table.add_column("Name", style="cyan", justify="center")
+                table.add_column("Phone", style="green", justify="center")
+                table.add_column("E-mail", style="red", justify="center")
+                table.add_column("Address", style="yellow", justify="center")
+                table.add_column("Birthday", style="red", justify="center")
+
+                for name, birthday in upcoming_birthdays:
+                    contact = book.find(name)
+                    phones = ', '.join([phone.value for phone in contact.phones]) if contact.phones else ""
+                    emails = ', '.join([email.value for email in contact.emails if email != []]) if contact.emails else ""
+                    address = contact.address if contact.address else ""
+                    
+                    table.add_row(name, phones, emails, address, str(birthday))
+
+                console.print(table)
+            else:
+                console.print("No upcoming birthdays.")
         elif command == "help":
             print(class_command.help())
         else:

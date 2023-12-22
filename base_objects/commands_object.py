@@ -151,8 +151,9 @@ class Commands:
         return record.delete_email(birthday)
 
     @input_error
-    def upcoming_birthday(self, book):
-        return book.upcoming_birthday()
+    def upcoming_birthday(self, args,  book):
+        days = args[0]
+        return book.upcoming_birthday(int(days))
 
     @staticmethod
     def help():

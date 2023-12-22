@@ -84,12 +84,12 @@ class AddressBook(UserDict):
 
                 if next_birthday < today:
                     next_birthday = datetime(today.year + 1, birthday.month, birthday.day)
-
+    
                 days_until_birthday = (next_birthday - today).days
-
+    
                 if 0 < days_until_birthday <= days:
                     upcoming_birthdays.append((name, contact.birthday))
-
+    
         return upcoming_birthdays
 
     def delete_contact(self, name):
@@ -99,20 +99,4 @@ class AddressBook(UserDict):
         else:
             print(f"Contact '{name}' not found.")
 
-    def upcoming_birthdays(self, days):
-        today = datetime.now()
-        upcoming_birthdays = []
 
-        for name, contact in self.data.items():
-            birthday = contact.birthday.value.date()
-            next_birthday = datetime(today.year, birthday.month, birthday.day)
-
-            if next_birthday < today:
-                next_birthday = datetime(today.year + 1, birthday.month, birthday.day)
-
-            days_until_birthday = (next_birthday - today).days
-
-            if 0 < days_until_birthday <= days:
-                upcoming_birthdays.append((name, contact.birthday))
-
-        return upcoming_birthdays
