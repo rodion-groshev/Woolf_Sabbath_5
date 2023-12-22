@@ -4,6 +4,7 @@ from base_objects.contact_object import Email
 from utilities.error_handler import input_error, BadPhoneNumber, BadEmailFormat, BadBirthdayFormat
 from base_objects.record_object import Record
 from utilities.help_message import help_message
+from utilities.birtday_output import birthday_output
 
 
 class Commands:
@@ -224,8 +225,9 @@ class Commands:
         return record.delete_birthday(birthday)
 
     @input_error
-    def upcoming_birthday(self, book):
-        return book.upcoming_birthday()
+    def upcoming_birthday(self, args, book):
+        days = args[0]
+        birthday_output(book.upcoming_birthday(int(days)), book)
 
     @staticmethod
     def help():
