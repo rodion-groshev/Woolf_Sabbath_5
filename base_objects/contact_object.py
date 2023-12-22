@@ -16,16 +16,12 @@ class Name(Field):
 
 
 class Phone(Field):
-    def __init__(self, phone):
-        super().__init__(phone)
-        if not self.validate_phone(phone):
-            raise ValueError("Invalid phone number format")
+    def __init__(self, number):
+        self.number = number
 
-    @staticmethod
-    def validate_phone(phone):
-        pattern = r"^\+?(\d{10,15})$"
-        return re.match(pattern, phone) is not None
-
+    def validate_phone(self):
+        phone_pattern = re.compile(r'^\+?[1-9]\d{1,14}$')
+        return bool(re.match(phone_pattern, self.number))
 
 class Email(Field):
     def __init__(self, email):
@@ -33,7 +29,6 @@ class Email(Field):
         if not self.validate_email(email):
             raise ValueError("Invalid email format.")
 
-    @staticmethod
     def validate_email(email):
         pattern = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
         return re.match(pattern, email) is not None

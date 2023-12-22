@@ -1,4 +1,7 @@
-from utilities.error_handler import input_error
+import re
+from datetime import datetime
+from base_objects.contact_object import Email
+from utilities.error_handler import input_error, BadPhoneNumber, BadEmailFormat, BadBirthdayFormat
 from base_objects.record_object import Record
 
 
@@ -35,6 +38,9 @@ class Commands:
     def add_email(self, args, book):
         name, email = args
         record = book.find(name)
+        email_pattern = re.compile(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
+        if not re.match(email_pattern, email):
+            raise BadEmailFormat("Invalid email format. It should be example@gmail.com.")
         record.add_email(email)
         return f"Email: {email} added to contact {name}."
 
@@ -49,6 +55,10 @@ class Commands:
     def add_birthday(self, args, book):
         name, birthday = args
         record = book.find(name)
+        try:
+            datetime.strptime(birthday, "%d.%m.%Y")
+        except ValueError:
+            raise BadBirthdayFormat("Invalid birthday format. Expected format: dd/mm/yyyy.")
         record.add_birthday(birthday)
         return f"Birthday: {birthday} added to contact {name}."
 
@@ -57,6 +67,9 @@ class Commands:
         name, old_phone, new_phone = args
         if name in book:
             record = book.find(name)
+            phone_pattern = re.compile(r'^\+?[1-9]\d{1,14}$')
+            if not re.match(phone_pattern, new_phone):
+                raise BadPhoneNumber("Invalid phone number format. It should be +380*********.")
             record.edit_phone(old_phone, new_phone)
             return "Contact updated."
         else:
@@ -67,7 +80,10 @@ class Commands:
         name, old_email, new_email = args
         if name in book:
             record = book.find(name)
-            record.edit_email(old_email, new_email)
+            email_pattern = re.compile(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
+            if not re.match(email_pattern, new_email):
+                raise BadEmailFormat()
+            record.edit_email(Email(old_email), Email(new_email))
             return "Contact updated."
         else:
             return "Contact not found"
@@ -87,6 +103,10 @@ class Commands:
         name, birthday = args
         if name in book:
             record = book.find(name)
+            try:
+                datetime.strptime(birthday, "%d.%m.%Y")
+            except ValueError:
+                raise BadBirthdayFormat("Invalid birthday format. Expected format: dd/mm/yyyy.")
             record.edit_birthday(birthday)
             return "Contact updated."
         else:
