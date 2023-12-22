@@ -72,19 +72,19 @@ class Record:
         if phone in self.phones:
             self.phones.remove(phone)
         else:
-            raise PhoneNumberIsMissing("Phone number not found in the record.")
+            raise PhoneNumberIsMissing(phone)
 
     def delete_email(self, email):
         if email in self.emails:
             self.emails.remove(email)
         else:
-            raise ValidationException("Email not found in the record.")
+            raise ValidationException(email)
 
     def delete_address(self):
         self.address = None
 
     def delete_birthday(self):
-        self.birthday = None
+        self.address = None
 
     def __str__(self):
         phones_str = ', '.join(str(phone) for phone in self.phones)

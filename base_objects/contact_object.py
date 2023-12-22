@@ -24,7 +24,7 @@ class Phone(Field):
             raise BadPhoneNumber(value)
 
     def validate_phone(self):
-        phone_pattern = re.compile(r'^\+?[1-9]\d{1,14}$')
+        phone_pattern = re.compile(r'^\+38\d{9,10}$')
         return bool(re.match(phone_pattern, self.value))
 
 class Email(Field):

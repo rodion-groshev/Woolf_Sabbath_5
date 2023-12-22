@@ -67,7 +67,7 @@ class Commands:
         name, old_phone, new_phone = args
         if name in book:
             record = book.find(name)
-            phone_pattern = re.compile(r'^\+?[1-9]\d{1,14}$')
+            phone_pattern = re.compile(r'^\+38\d{9,10}$')
             if not re.match(phone_pattern, new_phone):
                 raise BadPhoneNumber(new_phone)
             record.edit_phone(old_phone, new_phone)
@@ -168,7 +168,7 @@ class Commands:
     def delete_birthday(self, args, book):
         name, birthday = args
         record = book.find(name)
-        return record.delete_email(birthday)
+        return record.delete_birthday(birthday)
 
     @input_error
     def upcoming_birthday(self, book):
