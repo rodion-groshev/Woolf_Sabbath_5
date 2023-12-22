@@ -40,7 +40,7 @@ class Commands:
         record = book.find(name)
         email_pattern = re.compile(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
         if not re.match(email_pattern, email):
-            raise BadEmailFormat("Invalid email format. It should be example@gmail.com.")
+            raise BadEmailFormat(email)
         record.add_email(email)
         return f"Email: {email} added to contact {name}."
 
@@ -58,7 +58,7 @@ class Commands:
         try:
             datetime.strptime(birthday, "%d.%m.%Y")
         except ValueError:
-            raise BadBirthdayFormat("Invalid birthday format. Expected format: dd/mm/yyyy.")
+            raise BadBirthdayFormat(birthday)
         record.add_birthday(birthday)
         return f"Birthday: {birthday} added to contact {name}."
 
@@ -69,7 +69,7 @@ class Commands:
             record = book.find(name)
             phone_pattern = re.compile(r'^\+?[1-9]\d{1,14}$')
             if not re.match(phone_pattern, new_phone):
-                raise BadPhoneNumber("Invalid phone number format. It should be +380*********.")
+                raise BadPhoneNumber(new_phone)
             record.edit_phone(old_phone, new_phone)
             return "Contact updated."
         else:
@@ -82,7 +82,7 @@ class Commands:
             record = book.find(name)
             email_pattern = re.compile(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
             if not re.match(email_pattern, new_email):
-                raise BadEmailFormat()
+                raise BadEmailFormat(new_email)
             record.edit_email(Email(old_email), Email(new_email))
             return "Contact updated."
         else:
@@ -106,7 +106,7 @@ class Commands:
             try:
                 datetime.strptime(birthday, "%d.%m.%Y")
             except ValueError:
-                raise BadBirthdayFormat("Invalid birthday format. Expected format: dd/mm/yyyy.")
+                raise BadBirthdayFormat(birthday)
             record.edit_birthday(birthday)
             return "Contact updated."
         else:
