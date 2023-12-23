@@ -8,8 +8,8 @@ class Record:
         self.name = Name(name)
         self.phones = []
         self.emails = []
-        self.address = None
-        self.birthday = None
+        self.address = ''
+        self.birthday = ''
 
     def add_phone(self, phone):
         new_phone = Phone(phone)
