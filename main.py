@@ -73,7 +73,11 @@ def main():
         elif command == "delete-birthday":
             print(class_command.delete_birthday(data, book))
         elif command == "birthday":
-            class_command.upcoming_birthday(data, book)
+            try:
+                days = int(data)
+                class_command.upcoming_birthday(days, book)
+            except ValueError:
+                print("Please enter a valid number for days.")
         elif command == "add-note":
             print(class_command.add_new_note(data, notebook))
         elif command == "show-notes":

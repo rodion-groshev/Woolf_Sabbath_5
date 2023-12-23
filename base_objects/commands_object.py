@@ -165,9 +165,31 @@ class Commands:
         return record.delete_birthday()
 
     @input_error
-    def upcoming_birthday(self, name, book):
-        days = name[0]
-        birthday_output(book.upcoming_birthday(int(days)), book)
+    def upcoming_birthday(self, days, book):
+        today = datetime.now()
+        upcoming_birthdays = []
+
+        for name, contact in book.items():
+            if contact.birthday:
+                birthday = contact.birthday.value.date()
+                next_birthday = datetime(today.year, birthday.month, birthday.day)
+
+                if next_birthday < today:
+                    next_birthday = datetime(today.year + 1, birthday.month, birthday.day)
+
+                days_until_birthday = (next_birthday - today).days
+
+                if 0 < days_until_birthday <= days:
+                    upcoming_birthdays.append((name, contact.birthday))
+
+        if upcoming_birthdays:
+            print("\nUpcoming Birthdays:")
+            for name, birthday in upcoming_birthdays:
+                print(f"{name} - {birthday}")
+        else:
+            print("No upcoming birthdays.")
+
+        return upcoming_birthdays
 
     @staticmethod
     def help():
