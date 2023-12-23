@@ -1,8 +1,8 @@
 import re
 from datetime import datetime
-from base_objects.contact_object import Email
+from base_objects.main_objects import Email
 from utilities.error_handler import input_error, BadPhoneNumber, BadEmailFormat, BadBirthdayFormat
-from base_objects.record_object import Record
+from base_objects.record_object import Record, NoteRecord
 from utilities.help_message import help_message
 from utilities.birtday_output import birthday_output
 
@@ -172,3 +172,14 @@ class Commands:
     @staticmethod
     def help():
         return help_message()
+
+    def add_new_note(self, data, notebook):
+        tag = data
+        note_input = input("Enter the note: ")
+        note_record = NoteRecord(tag)
+        note_record.add_note_record(note_input)
+        notebook.add_note(note_record)
+        return f"Note {tag} added successfully."
+
+    def show_all_notes(self, notebook):
+        return notebook.show_all_notes()

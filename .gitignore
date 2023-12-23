@@ -3,6 +3,7 @@ __pycache__/
 base_objects/__pycache__
 utilities/__pycache__
 temp.pkl
+temp_note.pkl
 *.py[cod]
 *$py.class
 allure_report

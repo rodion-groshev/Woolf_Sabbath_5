@@ -16,6 +16,19 @@ class Name(Field):
         super().__init__(name)
 
 
+class Tag(Field):
+    def __init__(self, tag):
+        super().__init__(tag)
+
+
+class Note(Field):
+    def __init__(self, value):
+        super().__init__(value)
+
+
+# ADD VALIDATION
+
+
 class Phone(Field):
     def __init__(self, value):
         super().__init__(value)

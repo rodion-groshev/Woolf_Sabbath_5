@@ -1,6 +1,6 @@
 from datetime import datetime
 from utilities.error_handler import BadPhoneNumber, PhoneNumberIsMissing, ValidationException, BadBirthdayFormat
-from base_objects.contact_object import Name, Phone, Field, Birthday, Email, Address
+from base_objects.main_objects import Name, Phone, Field, Birthday, Email, Address, Tag, Note
 
 
 class Record:
@@ -90,3 +90,18 @@ class Record:
         emails_str = ', '.join(str(email) for email in self.emails)
         return (f"Record(name: {self.name}, phones: [{phones_str}], emails: [{emails_str}], address: {self.address}, "
                 f"birthday: {self.birthday})")
+
+
+class NoteRecord:
+    def __init__(self, tag):
+        self.tag = Tag(tag)
+        self.note_memory = None
+
+    def add_note_record(self, note):
+        self.note_memory = Note(note)
+
+    def edit_note(self, new_note):
+        self.note_memory = new_note
+
+    def delete_note(self):
+        self.note_memory = None
