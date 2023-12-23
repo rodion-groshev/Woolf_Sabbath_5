@@ -90,7 +90,6 @@ class AddressBook(UserDict):
                 if 0 < days_until_birthday <= days:
                     upcoming_birthdays.append((name, contact.birthday))
         print(upcoming_birthdays)
-        return upcoming_birthdays
 
     def delete_contact(self, name):
         if name in self.data:
