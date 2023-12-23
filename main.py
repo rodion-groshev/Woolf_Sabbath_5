@@ -1,10 +1,7 @@
 from prompt_toolkit import prompt
 from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.shortcuts import CompleteStyle
-from base_objects import note_object
-
 from base_objects.commands_object import Commands
-from base_objects.contact_object import Note
 from utilities.input_reader import parse_input
 from utilities.storage import Storage
 
@@ -12,11 +9,13 @@ from utilities.storage import Storage
 def main():
     read_data = Storage("temp")
     book = read_data.read_from_disk()
+    note = read_data.read_from_disk()
+
 
     commands = ["add-contact", "add-phone", "add-email", "add-address", "add-birthday", "edit-phone", "edit-email",
                 "edit-address", "edit-birthday", "show-all", "show-contact", "show-phone", "show-email", "show-address",
                 "show-birthday", "delete-contact", "delete-phone", "delete-email", "delete-address", "delete-birthday",
-                "birthday", "exit", "help", "add_note",  "del_note", "edit_note", "search-note", "read-note", "print-all-notes",]
+                "birthday", "add-note",  "del_note", "edit_note", "search_note", "read_note", "print-all-notes", "exit", "help",]
     word_completer = WordCompleter(commands, ignore_case=True)
 
     print("Welcome to the assistant bot!")
@@ -24,7 +23,8 @@ def main():
         user_input = prompt('Enter the command: ', completer=word_completer,
                             complete_style=CompleteStyle.MULTI_COLUMN)
         command, *args = parse_input(user_input)
-        class_command = Commands()
+        class_command = Commands(book, note)  
+
 
         if command == "exit":
             print("Good bye!")
@@ -71,22 +71,23 @@ def main():
         elif command == "delete-birthday":
             print(class_command.delete_birthday(args, book))
         elif command == "add-note":
-            print(class_command.add_note(args))
+            print(class_command.add_note_contact(note))
         elif command == "del-note":
-            print(class_command.del_note(args))
+            print(class_command.del_note(args, note))
         elif command == "edit-note":
-            print(class_command.edit_note(args))
+            print(class_command.edit_note(args, note))
         elif command == "read-note":
-            print(class_command.read_note(args))
+            print(class_command.read_note(args, note))
         elif command == "search-note":
-            print(class_command.search_note(args))  
+            print(class_command.search_note(args, note))
         elif command == "print-all-notes":
-            print(class_command.print_all_notes(args))         
+            print(class_command.print_all_notes(args, note))
         else:
             print(f"Invalid command {command}.")
 
-    read_data.save_to_disk(book)
 
+    read_data.save_to_disk(book)
+    read_data.save_to_disk(note)
 
 if __name__ == "__main__":
     main()

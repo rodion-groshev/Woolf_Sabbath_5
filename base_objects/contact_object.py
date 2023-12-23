@@ -1,8 +1,6 @@
 import re
 from datetime import datetime
 
-from base_objects.val_inp import StringValueInp
-
 
 class Field:
     def __init__(self, value):
@@ -43,28 +41,26 @@ class Email(Field):
 
 class Birthday:
     def __init__(self, value):
-        if type(value) == str:
+        if isinstance(value, str):
             self.value = datetime.strptime(value, "%d.%m.%Y")
-        elif type(value) == datetime:
+        elif isinstance(value, datetime):
             self.value = value
 
     def __str__(self):
         return str(self.value.strftime("%d.%m.%Y"))
 
     def __eq__(self, other):
-        if type(other) == str:
-            return self.value.date == datetime.strptime(other, "%d.%m.%Y").date
-        elif type(other) == datetime:
-            return self.value.date == other.value.date
+        if isinstance(other, str):
+            return self.value.date() == datetime.strptime(other, "%d.%m.%Y").date()
+        elif isinstance(other, datetime):
+            return self.value.date() == other.date()
         else:
             return False
 
 
 class Address(Field):
     def __init__(self, address):
-        super().__init__(address)
-        if not self.validate_address(address):
-            raise ValueError("The address cannot be empty.")
+        super().__init__(self.validate_address(address))
 
     @staticmethod
     def validate_address(address):
@@ -75,7 +71,7 @@ class Address(Field):
         return address.strip()
 
 
-class Note(StringValueInp):
+class Note(Field):
     def __init__(self, text, tags=None):
         super().__init__(text)
         self.tags = tags or []
@@ -86,6 +82,14 @@ class Note(StringValueInp):
 
     def has_tag(self, tag):
         return tag in self.tags
+
+    def add_tag(self, tag):
+        if tag not in self.tags:
+            self.tags.append(tag)
+
+    def remove_tag(self, tag):
+        if tag in self.tags:
+            self.tags.remove(tag)
 
     def validate(self, value):
         return value

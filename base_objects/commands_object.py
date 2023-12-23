@@ -1,8 +1,16 @@
+from base_objects.contact_object import Note
+from utilities import storage
 from utilities.error_handler import input_error
 from base_objects.record_object import Record
-from base_objects.note_object import Note
+from base_objects.note_object import Notes
 
 class Commands:
+    
+    def __init__(self, book, notes):
+        self.book = book
+        self.notes = notes         
+        
+          
     @input_error
     def add_contact(self, book,):
         name = input("Enter the name: ")
@@ -23,7 +31,18 @@ class Commands:
             
         book.add_contact(record)
         return f"Contact {name} added successfully."
+    
+    @input_error
+    def add_note_contact(self, note_text):
+        note_name = input("Enter the note naming: ")
+        note_text = input("Enter the note text body: ")
+        record = Record(note_name)
+        if note_text:
+            record.add_note(note_text)
+        self.notes.add_record(record)
+        return f"Contact {note_name} added successfully."
 
+    
     @input_error
     def add_phone(self, args, book):
         name, phone = args
@@ -149,55 +168,61 @@ class Commands:
         name, birthday = args
         record = book.find(name)
         return record.delete_email(birthday)
-
+    
+    
+    
+    
+    
     @input_error
     def add_note(self, args):
-        note_text = args.text
-        self.note.add_record(Note(note_text))
-        return f"Note '{note_text}' added successfully."
+        if args and len(args) > 0:
+            note_text = args[0]
+            self.note.add_record(Note(note_text))
+            return f"Нотатку '{note_text}' додано успішно."
+        else:
+            return "Будь ласка, введіть текст для нотатки."
 
-    @input_error
+
     def del_note(self, args):
-        note_id = int(args.id)
+        note_id = int(args[0]) 
         try:
             self.note.remove_record(note_id)
             return f"Note id {note_id} was removed."
         except IndexError:
             return f"Note with id {note_id} not found."
 
-    @input_error
     def edit_note(self, args):
-        note_id = int(args.id)
+        note_id = int(args[0])  
         try:
             note = self.note.data[note_id]
-            if args.text:
-                note.value = args.text
+            if args[1]:
+                note.value = args[1]  
             return f"Note id {note_id} updated."
         except IndexError:
             return f"Note with id {note_id} not found."
 
-    @input_error
-    def search_note(self, args):
-        if args.tag:
-            matching_records = self.note.search_by_tag(args.tag)
+    def search_note_by_tag(self, args):
+        if args[0]:  
+            matching_records = self.note.search_by_tag(args[0])
             return "\n".join(
                 [f"{index}. {record}" for index, record in matching_records.items()]
             )
-        elif args.query:
+        else:
+            return "Please provide a tag for searching."
+
+    def search_note_by_query(self, args):
+        if args[0]:  
+            matching_records = self.note.search_records(args[0])
             return "\n".join(
-                [
-                    f"{index}. {record}"
-                    for index, record in self.note.search_records(args.query).items()
-                ]
+                [f"{index}. {record}" for index, record in matching_records.items()]
             )
         else:
-            return "Please provide a search query or tag."
+            return "Please provide a query for searching."
 
-    @input_error
-    def read_note(self):
+    
+    def read_notes_all(self): 
         return self.note.print_all_notes()
-    
-    
+
     
     def help(self):
         print("\nAvailable Commands:")
@@ -227,6 +252,6 @@ class Commands:
         print("edit-note <id>")
         print("search-note <id> ")
         print("read-notes-all")
-        # print("add-note <id> <note>")
+        print("add-note <id> <note>")
         print("exit")
         print("help")

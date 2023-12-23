@@ -1,17 +1,19 @@
+from utilities import storage
 from utilities.error_handler import PhoneNumberIsMissing, ValidationException, BadBirthdayFormat
 from base_objects.contact_object import Name, Phone, Field, Birthday, Email, Address
 from base_objects.note_object import Note
 
 
 class Record:
-    def __init__(self, name):
+    def __init__(self, name,):
         self.name = Name(name)
         self.phones = []
         self.emails = []
         self.address = None
         self.birthday = None
-        self.notes = []
-
+        self.note = Note()    
+        
+            
     def add_phone(self, phone):
         new_phone = Phone(phone)
         self.phones.append(new_phone)
@@ -66,6 +68,17 @@ class Record:
 
     def delete_birthday(self):
         self.birthday = None
+        
+    def add_note(self, note_text):
+        self.note.add_record(Note(note_text))
+
+    def delete_note(self, note_id):
+        self.notes.remove_record(note_id)
+
+    def edit_note(self, note_id, new_text):
+        note = self.notes.data[note_id]
+        note.value = new_text
+        self.notes.edit_record(note_id, note)
 
     def __str__(self):
         phones_str = ', '.join(str(phone) for phone in self.phones)

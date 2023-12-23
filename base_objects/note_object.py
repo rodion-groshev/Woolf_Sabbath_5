@@ -1,54 +1,42 @@
 from collections import UserList
 from base_objects.contact_object import Note
+from utilities import storage
 from utilities.error_handler import NoteNotFound, input_error
-from utilities.storage import Storage
 
 
+from collections import UserList
 
 
-class Note(UserList):
-    def __init__(self, storage: Storage):
-        self.storage = storage
-        data = storage.read_from_disk()
-        self.data = data if isinstance(data, list) else list(data.values())
-        print(self.print_all_notes())
+class Notes(UserList):
+    
+    def __init__(self, text):
+        self.text = text
 
-    def add_record(self, rec: Note):
-        if not isinstance(rec, Note):
-            raise ValueError("Record must be an instance of NoteField")
-        self.data.append(rec)
+    def __str__(self):
+        return self.text
+    
+    
+    def add_record(self, note):
+        self.data.append(note)
 
-    def search_records(self, gets: str):
+    def remove_record(self, note_id):
+        if 0 <= note_id < len(self.data):
+            return self.data.pop(note_id)
+        else:
+            raise IndexError(f"Note with id {note_id} not found.")
+
+    def edit_record(self, note_id, new_value):
+        if 0 <= note_id < len(self.data):
+            self.data[note_id] = new_value
+        else:
+            raise IndexError(f"Note with id {note_id} not found.")
+
+    def search_records(self, query):
         matching_records = {}
         for index, record in enumerate(self.data):
-            if gets in record.value:
+            if query in record.value:
                 matching_records[index] = record
         return matching_records
 
-    def edit_record(self, rec_id: int, new_value: Note):
-        if 0 <= rec_id < len(self.data):
-            self.data[rec_id] = new_value
-        else:
-
-            def throw_bad_note_index(id: int):
-                raise NoteNotFound(f"Note index {id} out of range.")
-
-            input_error(throw_bad_note_index)
-
-    def remove_record(self, rec_id: int):
-        if 0 <= int(rec_id) < len(self.data):
-            return self.data.pop(int(rec_id))
-        else:
-            def throw_bad_note_index(id: int):
-                raise NoteNotFound(f"Note index {id} out of range.")
-
-            input_error(throw_bad_note_index, int(rec_id))
-
     def print_all_notes(self):
-        return (
-            "NOTES: \n"
-            + "\n".join(
-                [f"{index}. {record}" for index, record in enumerate(self.data)]
-            )
-            + "\n"
-        )
+        return "\n".join([f"{index}. {record}" for index, record in enumerate(self.data)])
