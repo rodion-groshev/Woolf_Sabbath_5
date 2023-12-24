@@ -1,23 +1,24 @@
-# Personal assistant
+# Woolf_Sabbath_5
 
-This application allows you to store, manage and search your contacts. Your data is stored on disk to not loose any important information.
+Personal assistant application allows you to store, manage and search your contacts. Your data is stored on disk to not lose any important information.
 
-Зберігати контакти з іменами, адресами, номерами телефонів, email та днями народження до книги контактів.
-Виводити список контактів, у яких день народження через задану кількість днів від поточної дати.
-Перевіряти правильність введеного номера телефону та email під час створення або редагування запису та повідомляти користувача у разі некоректного введення.
-Здійснювати пошук контактів серед контактів книги.
-Редагувати та видаляти записи з книги контактів.
-Зберігати нотатки з текстовою інформацією.
-Проводити пошук за нотатками.
-Редагувати та видаляти нотатки.
+It allows you to:
+  - Save contacts in the contact Book with:
+    - Name
+    - Address
+    - Phone Number
+    - E-Mail
+    - BithDate
+  - Show all contacts and details for them
+  - Verifies the correctness of entered data
+  - Find needed information
+  - Edit all needed details
 
+## Installation
 
+The application is written in Python language and requires Python version 3 or greater.
 
-## Instalation
-
-Application is written in python language and requires python version 3 or greater.
-
-Application also requires following libraries to be installed:
+The application also requires the following libraries to be installed:
 ```sh
 pip install prompt-toolkit
 pip install rich
@@ -37,5 +38,28 @@ python main.py
 ## Quick start
 
 here couple of commands, that show how to add, search and delete.
+
+
+    Welcome to the assistant bot!
+
+    Enter the command: add-contact
+
+    Enter the Name: John Doe
+    Enter the phone: +38012345678
+    Enter email: test@example.com          
+    Enter the address: Some str. 25
+    Enter a birthday: 01.01.2023
+    Contact  added successfully.
+
+    Enter the command: show-all
+
+    All Contacts:
+    - Phone(s): +38012345678, E-mail(s): test@example.com, Address: Spome str. 25, Birthday: 01.01.2023
+    
+    Enter the command: delete-contact John Doe
+    Contact 'John Doe' deleted successfully.
+
+    Enter the command: exit
+    Good bye!
 
 [Manual for all available commands](MANUAL.md)
