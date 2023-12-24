@@ -1,10 +1,13 @@
 import re
 from datetime import datetime
 from base_objects.main_objects import Email
-from utilities.error_handler import input_error, BadPhoneNumber, BadEmailFormat, BadBirthdayFormat, EmptyFieldsException
+from utilities.error_handler import input_error, BadPhoneNumber, BadEmailFormat, BadBirthdayFormat, EmptyFieldsException, ValidationException
+
 from base_objects.record_object import Record, NoteRecord
 from utilities.help_message import help_message
 from utilities.birtday_output import birthday_output
+
+
 
 
 class Commands:
@@ -79,11 +82,11 @@ class Commands:
         new_email = input("Enter the new email address: ")
         if name in book:
             record = book.find(name)
-            email_pattern = re.compile(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
-            if not re.match(email_pattern, new_email):
-                raise BadEmailFormat(new_email)
-            record.edit_email_record(Email(old_email), Email(new_email))
-            return "Contact updated."
+            try:
+                record.edit_email_record(old_email, new_email)
+                return "Contact updated."
+            except ValidationException as ve:
+                return str(ve)
         else:
             return "Contact not found"
 

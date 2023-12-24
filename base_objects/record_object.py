@@ -48,15 +48,17 @@ class Record:
             raise PhoneNumberIsMissing(old_phone)
 
     def edit_email_record(self, old_email, new_email):
-        if old_email in self.emails:
-            email_pattern = re.compile(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
-            if not re.match(email_pattern, new_email):
-                raise BadEmailFormat(new_email)
-            else:
-                index = self.emails.index(old_email)
-                self.emails[index] = new_email
+        email_objects = [email_obj for email_obj in self.emails if str(email_obj) == old_email]
+        if email_objects:
+            old_email_obj = email_objects[0]
+            try:
+                new_email_obj = Email(new_email)
+                self.emails.remove(old_email_obj)
+                self.emails.append(new_email_obj)
+            except ValueError:
+                raise ValidationException("Invalid email address.")
         else:
-            raise EmailNotFound(old_email)
+            raise ValidationException("Email address not found.")
 
     def edit_address_record(self, new_address):
         self.address = Field(new_address)
