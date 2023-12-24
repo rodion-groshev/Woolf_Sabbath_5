@@ -172,9 +172,13 @@ class Commands:
         
     @input_error
     def delete_birthday(self, name, book):
-        record = book.find(name)
-        return record.delete_birthday_record()
-
+        contact = book.find(name)
+        if contact:
+            contact.delete_birthday_record()
+            return f"Birthday deleted for contact {name}."
+        else:
+            return f"Contact '{name}' not found."
+        
     @input_error
     def upcoming_birthday(self, days, book):
         birthday_output(book.birthday_func(int(days)))
