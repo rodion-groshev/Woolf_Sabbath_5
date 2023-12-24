@@ -142,8 +142,12 @@ class Commands:
     @input_error
     def delete_phone(self, name, book):
         phone = input("Enter the phone number to delete: ")
-        record = book.find(name)
-        return record.delete_phone_record(phone)
+        contact = book.find(name)
+        if contact:
+            contact.delete_phone_record(phone)
+            return f"Phone number {phone} deleted for contact {name}."
+        else:
+            return f"Contact '{name}' not found."
 
     @input_error
     def delete_email(self, name, book):

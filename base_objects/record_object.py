@@ -37,6 +37,7 @@ class Record:
         self.birthday = new_birthday
 
     def edit_phone_record(self, old_phone, new_phone):
+
         if old_phone in [str(phone_obj) for phone_obj in self.phones]:
             new_phone_obj = Phone(new_phone)
             if new_phone_obj.validate_phone():
@@ -68,10 +69,11 @@ class Record:
         self.birthday = new_birthday
 
     def delete_phone_record(self, phone):
-        if phone in self.phones:
-            self.phones.remove(phone)
+        if phone in [str(phone_obj) for phone_obj in self.phones]:
+            self.phones = [phone_obj for phone_obj in self.phones if str(phone_obj) != phone]
         else:
             raise PhoneNumberIsMissing(phone)
+
 
     def delete_email_record(self, email):
         if email in [str(email_obj) for email_obj in self.emails]:
