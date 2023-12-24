@@ -3,6 +3,39 @@ from datetime import datetime
 
 
 class AddressBook(UserDict):
+    """
+    AddressBook represents all contacts data for specific name.
+
+    Attributes
+    ----------
+    data : dict
+        dict of Record object by name tag
+
+    Methods
+    -------
+    add_contact(self, record)
+        Add contact Record to the Book
+    find(self, name)
+        find Record by the name
+    show_all(self)
+        Returns string with all contacts in a Book
+    show_contact(self, name)
+        Returns string with contact details for specic name in a Book
+    show_phone(self, name)
+        Returns string with phone for specic name in a Book
+    show_email(self, name)
+        Returns string with email for specic name in a Book
+    show_address(self, name)
+        Returns string with address for specic name in a Book
+    show_birthday(self, name)
+        Returns string with birthday for specic name in a Book
+    upcoming_birthday(self, days)
+        Returns string with a list of upcomming birthdays
+        in all Book
+    delete_contact(self, name)
+        Delete contact Record from the Book
+    """
+    
     def add_contact(self, record):
         self.data[record.name.value] = record
 
