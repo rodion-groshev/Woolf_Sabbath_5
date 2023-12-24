@@ -48,7 +48,7 @@ class NoteBook(UserDict):
         Returns
         -------
         string
-            list of tags and Notes for themß
+            list of tags and Notes for them
         """
 
         if self.data:

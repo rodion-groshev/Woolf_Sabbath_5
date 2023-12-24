@@ -4,6 +4,8 @@ from utilities.error_handler import BadPhoneNumber
 
 
 class Field:
+    """Field class represents fields in Records"""
+
     def __init__(self, value):
         self.value = value
 
@@ -12,27 +14,41 @@ class Field:
 
 
 class Name(Field):
+    """Name class represents Name field"""
+
     def __init__(self, name):
         super().__init__(name)
+    # FIXME: add validation
 
 
 class Tag(Field):
+    """Tag class represent Tag to index Notes in field"""
+
     def __init__(self, tag):
         super().__init__(tag)
+    # FIXME: add validation
 
 
 class Note(Field):
+    """Note class represent Note entered by user as field"""
     def __init__(self, value):
         super().__init__(value)
-
-
-# ADD VALIDATION
-
+    # FIXME: add validation
 
 class Phone(Field):
+    """
+    Phone class represent Phone in a field
+    
+    Raises
+    ------
+    BadPhoneNumber
+        phone string is incorrect, doesn't pass validator
+    """
+
     def __init__(self, value):
         super().__init__(value)
         if not self.validate_phone():
+            # FIXME: all classes rise ValueError except this one
             raise BadPhoneNumber(value)
 
     def validate_phone(self):
@@ -41,6 +57,15 @@ class Phone(Field):
 
 
 class Email(Field):
+    """
+    Email class represent Email in a field
+    
+    Raises
+    ------
+    ValueError
+        email string is incorrect, doesn't pass validator
+    """
+
     def __init__(self, email):
         super().__init__(email)
         if not self.validate_email():
@@ -52,8 +77,18 @@ class Email(Field):
 
 
 class Birthday(Field):
+    """
+    Birthday class represent Birthday in a field
+    
+    Raises
+    ------
+    ValueError
+        birthday string is incorrect, doesn't pass validator
+    """
+
     def __init__(self, value):
         date_format = "%d.%m.%Y"
+        # FIXME: same validation style - new function
         try:
             value = datetime.strptime(value, date_format).date()
         except ValueError:
@@ -64,6 +99,15 @@ class Birthday(Field):
 
 
 class Address(Field):
+    """
+    Address class represent Address in a field
+    
+    Raises
+    ------
+    ValueError
+        Address string is incorrect, doesn't pass validator
+    """
+
     def __init__(self, address):
         super().__init__(address)
         if not self.validate_address(address):
