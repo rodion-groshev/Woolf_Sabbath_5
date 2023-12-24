@@ -165,8 +165,7 @@ class Commands:
         return record.delete_birthday()
 
     @input_error
-    def upcoming_birthday(self, name, book):
-        days = name[0]
+    def upcoming_birthday(self, days, book):
         birthday_output(book.upcoming_birthday(int(days)), book)
 
     @staticmethod

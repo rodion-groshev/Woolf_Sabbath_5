@@ -1,4 +1,4 @@
-from collections import UserDict
+from collections import UserDict, defaultdict
 from datetime import datetime
 
 
@@ -74,36 +74,28 @@ class AddressBook(UserDict):
             print(f"Contact '{name}' not found.")
 
     def upcoming_birthday(self, days):
-        
-        try:
-            days = int(days)
-        except ValueError:
-            return "Please enter a valid number for days."
-        
-        today = datetime.now()
-        upcoming_birthdays = []
+        default_dict = defaultdict(list)
+        today = datetime.today().date()
 
-        for name, contact in self.data.items():
-            if contact.birthday:
-                birthday = contact.birthday.value.date()
-                next_birthday = datetime(today.year, birthday.month, birthday.day)
+        for user in self.data:
+            name = self.data[user].name.value
+            birthday = self.data[user].birthday.value
+            birthday_this_year = birthday.replace(year=today.year)
 
-                if next_birthday < today:
-                    next_birthday = datetime(today.year + 1, birthday.month, birthday.day)
+            if birthday_this_year < today:
+                birthday_this_year = birthday_this_year.replace(year=today.year + 1)
 
-                days_until_birthday = (next_birthday - today).days
+            delta_days = (birthday_this_year - today).days
+            if 0 <= delta_days < days:
+                if birthday_this_year.strftime("%A") in ["Saturday", "Sunday"] and delta_days <= 5:
+                    default_dict[birthday_this_year.strftime("Monday")].append(f"{name} {birthday}")
+                else:
+                    default_dict[birthday_this_year.strftime("%A")].append(f"{name} {birthday}")
 
-                if 0 < days_until_birthday <= days:
-                    upcoming_birthdays.append((name, contact.birthday))
+        week = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+        default_dict = {day: default_dict[day] for day in week}
 
-        if upcoming_birthdays:
-            print("\nUpcoming Birthdays:")
-            for name, birthday in upcoming_birthdays:
-                print(f"{name} - {birthday}")
-        else:
-            print("No upcoming birthdays.")
-
-        return upcoming_birthdays
+        return default_dict
 
     def delete_contact(self, name):
         if name in self.data:
