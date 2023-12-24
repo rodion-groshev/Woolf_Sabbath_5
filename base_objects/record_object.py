@@ -37,14 +37,9 @@ class Record:
 
     def edit_phone_record(self, old_phone, new_phone):
         if old_phone in self.phones:
-            new_phone_obj = Phone(new_phone)
-            if new_phone_obj.validate_phone():
-                index = self.phones.index(old_phone)
-                self.phones[index] = new_phone_obj
-            else:
-                raise ValidationException(new_phone_obj)
+            self.phones = [Phone(new_phone) if str(p) == old_phone else p for p in self.phones]
         else:
-            raise PhoneNumberIsMissing()
+            raise PhoneNumberIsMissing(old_phone)
 
     def edit_email_record(self, old_email, new_email):
         if old_email in self.emails:
@@ -75,7 +70,6 @@ class Record:
 
     def delete_email_record_record(self, email):
         if email in self.emails:
-            print("Fuck")
             self.emails.remove(email)
         else:
             raise ValidationException(email)
