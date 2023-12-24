@@ -63,8 +63,8 @@ class Record:
         self.birthday = new_birthday
 
     def delete_phone_record(self, phone):
-        if phone in self.phones:
-            self.phones.remove(phone)
+        if phone in [str(phone_obj) for phone_obj in self.phones]:
+            self.phones = [phone_obj for phone_obj in self.phones if str(phone_obj) != phone]
         else:
             raise PhoneNumberIsMissing(phone)
 
