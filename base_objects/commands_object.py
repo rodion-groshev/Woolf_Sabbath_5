@@ -69,15 +69,9 @@ class Commands:
     def edit_phone(self, name, book):
         old_phone = input("Enter the old phone number: ")
         new_phone = input("Enter the new phone number: ")
-        if name in book:
-            record = book.find(name)
-            phone_pattern = re.compile(r'^\+38\d{9,10}$')
-            if not re.match(phone_pattern, new_phone):
-                raise BadPhoneNumber(new_phone)
-            record.edit_phone_record(old_phone, new_phone)
-            return f"Contact {name} updated."
-        else:
-            return "Contact not found"
+        record = book.find(name)
+        record.edit_phone_record(old_phone, new_phone)
+        return f"Contact {name} updated."
 
     @input_error
     def edit_email(self, name, book):

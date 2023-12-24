@@ -36,15 +36,14 @@ class Record:
         self.birthday = new_birthday
 
     def edit_phone_record(self, old_phone, new_phone):
-        if old_phone in self.phones:
+        if old_phone in [str(phone_obj) for phone_obj in self.phones]:
             new_phone_obj = Phone(new_phone)
             if new_phone_obj.validate_phone():
-                index = self.phones.index(old_phone)
-                self.phones[index] = new_phone_obj
+                self.phones = [phone_obj if str(phone_obj) != old_phone else new_phone_obj for phone_obj in self.phones]
             else:
-                raise ValidationException(new_phone_obj)
+                raise ValidationException("Invalid phone number.")
         else:
-            raise PhoneNumberIsMissing()
+            raise PhoneNumberIsMissing(old_phone)
 
     def edit_email_record(self, old_email, new_email):
         if old_email in self.emails:
