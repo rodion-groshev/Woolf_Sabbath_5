@@ -83,7 +83,7 @@ class Record:
         self.address = None
 
     def delete_birthday_record(self):
-        self.address = None
+        self.birthday = None
 
     def __str__(self):
         phones_str = ', '.join(str(phone) for phone in self.phones)

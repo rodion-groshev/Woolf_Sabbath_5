@@ -153,12 +153,6 @@ class Commands:
 
     @input_error
     def delete_email(self, name, book):
-        email = input("Enter the email number to delete: ")
-        record = book.find(name)
-        return record.delete_email_record(email)
-
-    @input_error
-    def delete_email(self, name, book):
         email = input("Enter the email to delete: ")
         contact = book.find(name)
         if contact:
@@ -167,6 +161,15 @@ class Commands:
         else:
             return f"Contact '{name}' not found."
 
+    @input_error
+    def delete_address(self, name, book):
+        contact = book.find(name)
+        if contact:
+            contact.delete_address_record()
+            return f"Address deleted for contact {name}."
+        else:
+            return f"Contact '{name}' not found."
+        
     @input_error
     def delete_birthday(self, name, book):
         record = book.find(name)
