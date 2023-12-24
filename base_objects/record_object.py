@@ -11,23 +11,23 @@ class Record:
         self.address = None
         self.birthday = None
 
-    def add_phone(self, phone):
+    def add_phone_record(self, phone):
         new_phone = Phone(phone)
         if not new_phone.validate_phone():
             raise BadPhoneNumber(phone)
         self.phones.append(new_phone)
 
-    def add_email(self, email):
+    def add_email_record(self, email):
         new_email = Email(email)
         if new_email.validate_email():
             self.emails.append(new_email)
         else:
             raise ValidationException(new_email)
 
-    def add_address(self, address):
+    def add_address_record(self, address):
         self.address = Address(address)
 
-    def add_birthday(self, birthday):
+    def add_birthday_record(self, birthday):
         new_birthday = Birthday(birthday)
         try:
             datetime.strptime(birthday, "%d.%m.%Y")
@@ -35,7 +35,7 @@ class Record:
             raise BadBirthdayFormat(new_birthday)
         self.birthday = new_birthday
 
-    def edit_phone(self, old_phone, new_phone):
+    def edit_phone_record(self, old_phone, new_phone):
         if old_phone in self.phones:
             new_phone_obj = Phone(new_phone)
             if new_phone_obj.validate_phone():
@@ -44,9 +44,9 @@ class Record:
             else:
                 raise ValidationException(new_phone_obj)
         else:
-            raise PhoneNumberIsMissing(new_phone_obj)
+            raise PhoneNumberIsMissing()
 
-    def edit_email(self, old_email, new_email):
+    def edit_email_record(self, old_email, new_email):
         if old_email in self.emails:
             new_email_obj = Email(new_email)
             if new_email_obj.validate_email():
@@ -57,33 +57,33 @@ class Record:
         else:
             raise ValidationException(new_email_obj)
 
-    def edit_address(self, new_address):
+    def edit_address_record(self, new_address):
         self.address = Field(new_address)
 
-    def edit_birthday(self, new_birthday):
+    def edit_birthday_record(self, new_birthday):
         try:
             datetime.strptime(new_birthday, "%d.%m.%Y")
         except ValueError:
             raise BadBirthdayFormat(new_birthday)
         self.birthday = new_birthday
 
-    def delete_phone(self, phone):
+    def delete_phone_record(self, phone):
         if phone in self.phones:
             self.phones.remove(phone)
         else:
             raise PhoneNumberIsMissing(phone)
 
-    def delete_email_record(self, email):
+    def delete_email_record_record(self, email):
         if email in self.emails:
             print("Fuck")
             self.emails.remove(email)
         else:
             raise ValidationException(email)
 
-    def delete_address(self):
+    def delete_address_record(self):
         self.address = None
 
-    def delete_birthday(self):
+    def delete_birthday_record(self):
         self.address = None
 
     def __str__(self):

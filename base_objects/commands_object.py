@@ -16,16 +16,16 @@ class Commands:
         birthday = input("Enter a birthday: ")
         record = Record(data)
 
-        if not phone or email or address or birthday:
+        if not phone and not email and not address and not birthday:
             raise EmptyFieldsException
         if phone:
-            record.add_phone(phone)
+            record.add_phone_record(phone)
         if email:
-            record.add_email(email)
+            record.add_email_record(email)
         if address:
-            record.add_address(address)
+            record.add_address_record(address)
         if birthday:
-            record.add_birthday(birthday)
+            record.add_birthday_record(birthday)
 
         book.add_contact_book(record)
         return f"Contact {data} added successfully."
@@ -34,7 +34,7 @@ class Commands:
     def add_phone(self, name, book):
         phone = input("Enter the phone number: ")
         record = book.find(name)
-        record.add_phone(phone)
+        record.add_phone_record(phone)
         return f"Phone: {phone} added to contact {name}."
 
     @input_error
@@ -44,14 +44,14 @@ class Commands:
         email_pattern = re.compile(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
         if not re.match(email_pattern, email):
             raise BadEmailFormat(email)
-        record.add_email(email)
+        record.add_email_record(email)
         return f"Email: {email} added to contact {name}."
 
     @input_error
     def add_address(self, name, book):
         address = input("Enter the address: ")
         record = book.find(name)
-        record.add_address(address)
+        record.add_address_record(address)
         return f"Address: {address} added to contact {name}."
 
     @input_error
@@ -62,7 +62,7 @@ class Commands:
             datetime.strptime(birthday, "%d.%m.%Y")
         except ValueError:
             raise BadBirthdayFormat(birthday)
-        record.add_birthday(birthday)
+        record.add_birthday_record(birthday)
         return f"Birthday: {birthday} added to contact {name}."
 
     @input_error
@@ -74,7 +74,7 @@ class Commands:
             phone_pattern = re.compile(r'^\+38\d{9,10}$')
             if not re.match(phone_pattern, new_phone):
                 raise BadPhoneNumber(new_phone)
-            record.edit_phone(old_phone, new_phone)
+            record.edit_phone_record(old_phone, new_phone)
             return f"Contact {name} updated."
         else:
             return "Contact not found"
@@ -88,7 +88,7 @@ class Commands:
             email_pattern = re.compile(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
             if not re.match(email_pattern, new_email):
                 raise BadEmailFormat(new_email)
-            record.edit_email(Email(old_email), Email(new_email))
+            record.edit_email_record(Email(old_email), Email(new_email))
             return "Contact updated."
         else:
             return "Contact not found"
@@ -98,7 +98,7 @@ class Commands:
         address = input("Enter the address: ")
         if name in book:
             record = book.find(name)
-            record.edit_address(address)
+            record.edit_address_record(address)
             return "Contact updated."
         else:
             return "Contact not found."
@@ -112,7 +112,7 @@ class Commands:
                 datetime.strptime(birthday, "%d.%m.%Y")
             except ValueError:
                 raise BadBirthdayFormat(birthday)
-            record.edit_birthday(birthday)
+            record.edit_birthday_record(birthday)
             return "Contact updated."
         else:
             return "Contact not found"
@@ -149,7 +149,7 @@ class Commands:
     def delete_phone(self, name, book):
         phone = input("Enter the phone number to delete: ")
         record = book.find(name)
-        return record.delete_phone(phone)
+        return record.delete_phone_record(phone)
 
     @input_error
     def delete_email(self, name, book):
@@ -160,12 +160,12 @@ class Commands:
     @input_error
     def delete_address(self, name, book):
         record = book.find(name)
-        return record.delete_address()
+        return record.delete_address_record()
 
     @input_error
     def delete_birthday(self, name, book):
         record = book.find(name)
-        return record.delete_birthday()
+        return record.delete_birthday_record()
 
     @input_error
     def upcoming_birthday(self, days, book):
