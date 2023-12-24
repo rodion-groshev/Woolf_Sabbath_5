@@ -55,23 +55,21 @@ class AddressBook(UserDict):
         if name in self.data:
             contact = self.data[name]
             if contact.address:
-                print(f"\n{name}'s Address:")
-                print(contact.address)
+                return f"\n{name}'s Address:\n{contact.address}"
             else:
-                print(f"{name} has no address.")
+                return f"{name} has no address."
         else:
-            print(f"Contact '{name}' not found.")
+            return f"Contact '{name}' not found."
 
     def show_birthday(self, name):
         if name in self.data:
             contact = self.data[name]
             if contact.birthday:
-                print(f"\n{name}'s Birthday:")
-                print(contact.birthday)
+                return f"\n{name}'s Birthday:\n{contact.birthday}"
             else:
-                print(f"{name} has no birthday.")
+                return f"{name} has no birthday."
         else:
-            print(f"Contact '{name}' not found.")
+            return f"Contact '{name}' not found."
 
     def upcoming_birthday(self, days):
         default_dict = defaultdict(list)
