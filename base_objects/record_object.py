@@ -1,5 +1,6 @@
 from datetime import datetime
-from utilities.error_handler import BadPhoneNumber, PhoneNumberIsMissing, ValidationException, BadBirthdayFormat
+import re
+from utilities.error_handler import BadEmailFormat, BadPhoneNumber, EmailNotFound, PhoneNumberIsMissing, ValidationException, BadBirthdayFormat
 from base_objects.main_objects import Name, Phone, Field, Birthday, Email, Address, Tag, Note
 
 
@@ -36,21 +37,26 @@ class Record:
         self.birthday = new_birthday
 
     def edit_phone_record(self, old_phone, new_phone):
-        if old_phone in self.phones:
-            self.phones = [Phone(new_phone) if str(p) == old_phone else p for p in self.phones]
+
+        if old_phone in [str(phone_obj) for phone_obj in self.phones]:
+            new_phone_obj = Phone(new_phone)
+            if new_phone_obj.validate_phone():
+                self.phones = [phone_obj if str(phone_obj) != old_phone else new_phone_obj for phone_obj in self.phones]
+            else:
+                raise ValidationException("Invalid phone number.")
         else:
             raise PhoneNumberIsMissing(old_phone)
 
     def edit_email_record(self, old_email, new_email):
         if old_email in self.emails:
-            new_email_obj = Email(new_email)
-            if new_email_obj.validate_email():
-                index = self.emails.index(old_email)
-                self.emails[index] = new_email_obj
+            email_pattern = re.compile(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
+            if not re.match(email_pattern, new_email):
+                raise BadEmailFormat(new_email)
             else:
-                raise ValidationException(new_email_obj)
+                index = self.emails.index(old_email)
+                self.emails[index] = new_email
         else:
-            raise ValidationException(new_email_obj)
+            raise EmailNotFound(old_email)
 
     def edit_address_record(self, new_address):
         self.address = Field(new_address)
@@ -68,9 +74,10 @@ class Record:
         else:
             raise PhoneNumberIsMissing(phone)
 
-    def delete_email_record_record(self, email):
-        if email in self.emails:
-            self.emails.remove(email)
+
+    def delete_email_record(self, email):
+        if email in [str(email_obj) for email_obj in self.emails]:
+            self.emails = [email_obj for email_obj in self.emails if str(email_obj) != email]
         else:
             raise ValidationException(email)
 
@@ -78,7 +85,7 @@ class Record:
         self.address = None
 
     def delete_birthday_record(self):
-        self.address = None
+        self.birthday = None
 
     def __str__(self):
         phones_str = ', '.join(str(phone) for phone in self.phones)
