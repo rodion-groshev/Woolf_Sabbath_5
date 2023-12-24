@@ -80,10 +80,10 @@ class Record:
             raise ValidationException(email)
 
     def delete_address(self):
-        self.address = None
+        self.address = ''
 
     def delete_birthday(self):
-        self.address = None
+        self.address = ''
 
     def __str__(self):
         phones_str = ', '.join(str(phone) for phone in self.phones)
