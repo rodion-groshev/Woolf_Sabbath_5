@@ -302,16 +302,12 @@ class NoteRecord:
 
         self.note_memory = Note(note)
 
-    def edit_note(self, new_note):
-        """
-        Parameters
-        ----------
-        new_note : Note
-            new Note object
-        """
-        
-        # FIXME: this method is not called and looks like accept Note
-        self.note_memory = new_note
+    def edit_tag_note(self, new_note):
+        self.note_memory = Note(new_note)
+        return f"Note by tag '{self.tag}' edited.\n"
+
+    def show_note_by_tag(self):
+        return f"Note by tag {self.tag}: {self.note_memory}"
 
     def delete_note(self):
         self.note_memory = None

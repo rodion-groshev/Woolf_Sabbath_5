@@ -59,3 +59,10 @@ class NoteBook(UserDict):
                 for tag, record_note in self.data.items())
         else:
             return "No tag in the notebook book."
+
+    def delete_note_by_tag(self, tag):
+        if tag in self.data:
+            del self.data[tag]
+            print(f"Contact '{tag}' deleted successfully.")
+        else:
+            print(f"Contact '{tag}' not found.")

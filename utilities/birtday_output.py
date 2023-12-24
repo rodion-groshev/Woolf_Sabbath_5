@@ -1,9 +1,11 @@
+from datetime import datetime
+
 from rich.console import Console
 from rich.table import Table
 from rich import box
 
 
-def birthday_output(upcoming_birthdays, book):
+def birthday_output(upcoming_birthdays):
     """Birthday output helper. Prints upcomming birthdays in a table"""
 
     console = Console()
