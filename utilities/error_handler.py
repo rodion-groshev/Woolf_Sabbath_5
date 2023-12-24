@@ -21,6 +21,8 @@ class BadBirthdayFormat(Exception):
 class BadEmailFormat(Exception):
     pass
 
+class EmailNotFound(Exception):
+    pass
 
 class NoteExists(Exception):
     pass
@@ -64,6 +66,8 @@ def input_error(func):
             return f"Birthday format '{e}' is incorrect. It should be DD.MM.YYYY."
         except BadEmailFormat as e:
             return f"Email format '{e}' is incorrect. It should be example@gmail.com. "
+        except EmailNotFound as e:
+            return f"Email not found {e}."
         except NoteExists as e:
             return f"Note already exists {e}."
         except NoteNotFound as e:

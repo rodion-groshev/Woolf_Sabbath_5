@@ -1,5 +1,6 @@
 from datetime import datetime
-from utilities.error_handler import BadPhoneNumber, PhoneNumberIsMissing, ValidationException, BadBirthdayFormat
+import re
+from utilities.error_handler import BadEmailFormat, BadPhoneNumber, EmailNotFound, PhoneNumberIsMissing, ValidationException, BadBirthdayFormat
 from base_objects.main_objects import Name, Phone, Field, Birthday, Email, Address, Tag, Note
 
 
@@ -47,14 +48,14 @@ class Record:
 
     def edit_email_record(self, old_email, new_email):
         if old_email in self.emails:
-            new_email_obj = Email(new_email)
-            if new_email_obj.validate_email():
-                index = self.emails.index(old_email)
-                self.emails[index] = new_email_obj
+            email_pattern = re.compile(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
+            if not re.match(email_pattern, new_email):
+                raise BadEmailFormat(new_email)
             else:
-                raise ValidationException(new_email_obj)
+                index = self.emails.index(old_email)
+                self.emails[index] = new_email
         else:
-            raise ValidationException(new_email_obj)
+            raise EmailNotFound(old_email)
 
     def edit_address_record(self, new_address):
         self.address = Field(new_address)
