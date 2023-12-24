@@ -8,11 +8,13 @@ from prompt_toolkit import prompt
 
 
 def main():
+    # Initializing storage for contacts and notes from files
     book_data = Storage("temp")
     book = book_data.read_from_disk_contacts()
     notebook_data = Storage("temp_note")
     notebook = notebook_data.read_from_disk_notes()
 
+    # List of available commands
     commands = ["add-contact", "add-phone", "add-email", "add-address", "add-birthday", "add-note", "edit-phone",
                 "edit-email", "edit-address", "edit-birthday", "edit-note", "delete-note", "show-all", "show-notes",
                 "show-contact", "show-phone", "show-email", "show-address", "show-birthday", "show-note",
@@ -22,16 +24,16 @@ def main():
 
     print("Welcome to the assistant bot!")
     while True:
+        # Input from the user
         user_input = prompt('Enter the command: ', completer=word_completer,
                             complete_style=CompleteStyle.MULTI_COLUMN)
         command, *args = parse_input(user_input)
         data = " ".join(args)
         class_command = Commands()
-
+        # Main commands
         if command == "exit":
             print("Good bye!")
             break
-
         elif command == "add-contact":
             print(class_command.add_contact(data, book))
         elif command == "add-phone":
@@ -88,7 +90,7 @@ def main():
             class_command.help()
         else:
             print(f"Invalid command {command}.")
-
+    # Completing input and saving data before exit
     book_data.save_to_disk(book)
     notebook_data.save_to_disk(notebook)
 

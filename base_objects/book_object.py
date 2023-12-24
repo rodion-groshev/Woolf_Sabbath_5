@@ -14,13 +14,13 @@ class AddressBook(UserDict):
 
     def show_all_book(self):
         if self.data:
-            print("\nAll Contacts:")
+
             return "\n".join(
                 f"{name} - "
                 f"Phone(s): {', '.join([phone.value for phone in value.phones])}, "
                 f"E-mail(s): {', '.join([email.value for email in value.emails])}, "
-                f"Address: {value.address}, "
-                f"Birthday: {value.birthday}"
+                f"Address: {value.address if value.address is not None else ''}, "
+                f"Birthday: {value.birthday if value.birthday is not None else ''}"
                 for name, value in self.data.items())
         else:
             return "No contacts in the address book."
