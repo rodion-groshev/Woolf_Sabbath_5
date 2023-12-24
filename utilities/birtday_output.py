@@ -1,9 +1,11 @@
+from datetime import datetime
+
 from rich.console import Console
 from rich.table import Table
 from rich import box
 
 
-def birthday_output(upcoming_birthdays, book):
+def birthday_output(upcoming_birthdays):
     console = Console()
     if upcoming_birthdays:
         table = Table(show_header=True, header_style="bold magenta", box=box.SIMPLE_HEAVY)

@@ -173,12 +173,23 @@ class Commands:
         return help_message()
 
     def add_new_note(self, data, notebook):
-        tag = data
         note_input = input("Enter the note: ")
-        note_record = NoteRecord(tag)
+        note_record = NoteRecord(data)
         note_record.add_note_record(note_input)
         notebook.add_note(note_record)
-        return f"Note {tag} added successfully."
+        return f"Note {data} added successfully."
 
     def show_all_notes(self, notebook):
         return notebook.show_all_notes()
+
+    def show_note(self, data, notebook):
+        note_record = notebook.find(data)
+        return note_record.show_note_by_tag()
+
+    def edit_note(self, data, notebook):
+        new_note = input("Enter new note: ")
+        note_record = notebook.find(data)
+        return note_record.edit_tag_note(new_note)
+
+    def delete_note(self, data, notebook):
+        return notebook.delete_note_by_tag(data)

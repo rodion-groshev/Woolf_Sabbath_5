@@ -14,10 +14,10 @@ def main():
     notebook = notebook_data.read_from_disk_notes()
 
     commands = ["add-contact", "add-phone", "add-email", "add-address", "add-birthday", "add-note", "edit-phone",
-                "edit-email", "edit-address", "edit-birthday", "show-all", "show-notes", "show-contact", "show-phone",
-                "show-email",
-                "show-address", "show-birthday", "delete-contact", "delete-phone", "delete-email", "delete-address",
-                "delete-birthday", "birthday", "exit", "help"]
+                "edit-email", "edit-address", "edit-birthday", "edit-note", "delete-note", "show-all", "show-notes",
+                "show-contact", "show-phone", "show-email", "show-address", "show-birthday", "show-note",
+                "delete-contact", "delete-phone", "delete-email", "delete-address", "delete-birthday", "birthday",
+                "exit", "help"]
     word_completer = WordCompleter(commands, ignore_case=True)
 
     print("Welcome to the assistant bot!")
@@ -78,6 +78,12 @@ def main():
             print(class_command.add_new_note(data, notebook))
         elif command == "show-notes":
             print(class_command.show_all_notes(notebook))
+        elif command == "show-note":
+            print(class_command.show_note(data, notebook))
+        elif command == "edit-note":
+            print(class_command.edit_note(data, notebook))
+        elif command == "delete-note":
+            print(class_command.delete_note(data, notebook))
         elif command == "help":
             class_command.help()
         else:
