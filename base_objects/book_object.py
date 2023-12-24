@@ -74,6 +74,12 @@ class AddressBook(UserDict):
             print(f"Contact '{name}' not found.")
 
     def upcoming_birthday(self, days):
+        
+        try:
+            days = int(days)
+        except ValueError:
+            return "Please enter a valid number for days."
+        
         today = datetime.now()
         upcoming_birthdays = []
 
@@ -89,7 +95,15 @@ class AddressBook(UserDict):
 
                 if 0 < days_until_birthday <= days:
                     upcoming_birthdays.append((name, contact.birthday))
-        print(upcoming_birthdays)
+
+        if upcoming_birthdays:
+            print("\nUpcoming Birthdays:")
+            for name, birthday in upcoming_birthdays:
+                print(f"{name} - {birthday}")
+        else:
+            print("No upcoming birthdays.")
+
+        return upcoming_birthdays
 
     def delete_contact(self, name):
         if name in self.data:
