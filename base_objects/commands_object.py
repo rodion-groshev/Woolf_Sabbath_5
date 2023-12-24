@@ -9,12 +9,12 @@ from utilities.birtday_output import birthday_output
 
 class Commands:
     @input_error
-    def add_contact(self, name, book):
+    def add_contact(self, data, book):
         phone = input("Enter the phone: ")
         email = input("Enter email: ")
         address = input("Enter the address: ")
         birthday = input("Enter a birthday: ")
-        record = Record(name)
+        record = Record(data)
 
         if phone:
             record.add_phone(phone)
@@ -25,7 +25,7 @@ class Commands:
         if birthday:
             record.add_birthday(birthday)
         book.add_contact(record)
-        return f"Contact {name} added successfully."
+        return f"Contact {data} added successfully."
 
     @input_error
     def add_phone(self, name, book):
@@ -165,8 +165,7 @@ class Commands:
         return record.delete_birthday()
 
     @input_error
-    def upcoming_birthday(self, name, book):
-        days = name[0]
+    def upcoming_birthday(self, days, book):
         birthday_output(book.upcoming_birthday(int(days)), book)
 
     @staticmethod

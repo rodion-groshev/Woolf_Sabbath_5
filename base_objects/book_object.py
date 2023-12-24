@@ -1,4 +1,4 @@
-from collections import UserDict
+from collections import UserDict, defaultdict
 from datetime import datetime
 
 
@@ -55,42 +55,45 @@ class AddressBook(UserDict):
         if name in self.data:
             contact = self.data[name]
             if contact.address:
-                print(f"\n{name}'s Address:")
-                print(contact.address)
+                return f"\n{name}'s Address:\n{contact.address}"
             else:
-                print(f"{name} has no address.")
+                return f"{name} has no address."
         else:
-            print(f"Contact '{name}' not found.")
+            return f"Contact '{name}' not found."
 
     def show_birthday(self, name):
         if name in self.data:
             contact = self.data[name]
             if contact.birthday:
-                print(f"\n{name}'s Birthday:")
-                print(contact.birthday)
+                return f"\n{name}'s Birthday:\n{contact.birthday}"
             else:
-                print(f"{name} has no birthday.")
+                return f"{name} has no birthday."
         else:
-            print(f"Contact '{name}' not found.")
+            return f"Contact '{name}' not found."
 
     def upcoming_birthday(self, days):
-        today = datetime.now()
-        upcoming_birthdays = []
+        default_dict = defaultdict(list)
+        today = datetime.today().date()
 
-        for name, contact in self.data.items():
-            if contact.birthday:
-                birthday = contact.birthday.value.date()
-                next_birthday = datetime(today.year, birthday.month, birthday.day)
+        for user in self.data:
+            name = self.data[user].name.value
+            birthday = self.data[user].birthday.value
+            birthday_this_year = birthday.replace(year=today.year)
 
-                if next_birthday < today:
-                    next_birthday = datetime(today.year + 1, birthday.month, birthday.day)
+            if birthday_this_year < today:
+                birthday_this_year = birthday_this_year.replace(year=today.year + 1)
 
-                days_until_birthday = (next_birthday - today).days
+            delta_days = (birthday_this_year - today).days
+            if 0 <= delta_days < days:
+                if birthday_this_year.strftime("%A") in ["Saturday", "Sunday"] and delta_days <= 5:
+                    default_dict[birthday_this_year.strftime("Monday")].append(f"{name} {birthday}")
+                else:
+                    default_dict[birthday_this_year.strftime("%A")].append(f"{name} {birthday}")
 
-                if 0 < days_until_birthday <= days:
-                    upcoming_birthdays.append((name, contact.birthday))
-        print(upcoming_birthdays)
-        return upcoming_birthdays
+        week = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+        default_dict = {day: default_dict[day] for day in week}
+
+        return default_dict
 
     def delete_contact(self, name):
         if name in self.data:
