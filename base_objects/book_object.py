@@ -6,13 +6,13 @@ from email.mime.multipart import MIMEMultipart
 
 
 class AddressBook(UserDict):
-    def add_contact(self, record):
+    def add_contact_book(self, record):
         self.data[record.name.value] = record
 
     def find(self, name):
         return self.data[name]
 
-    def show_all(self):
+    def show_all_book(self):
         if self.data:
             print("\nAll Contacts:")
             return "\n".join(
@@ -25,7 +25,7 @@ class AddressBook(UserDict):
         else:
             return "No contacts in the address book."
 
-    def show_contact(self, name):
+    def show_contact_book(self, name):
         if name in self.data:
             contact = self.data[name]
             return (f"\n{name}:\nPhone(s): {', '.join([phone.value for phone in contact.phones])}, "
@@ -34,17 +34,17 @@ class AddressBook(UserDict):
         else:
             return f"Contact '{name}' not found."
 
-    def show_phone(self, name):
+    def show_phone_book(self, name):
         if name in self.data:
             contact = self.data[name]
             if contact.phones:
-                return f"{name}'s phone(s): {', '.join([phone.value for phone in contact.phones])}"
+                return ', '.join([phone.value for phone in contact.phones])
             else:
                 return f"{name} has no phone numbers."
         else:
             return f"Contact '{name}' not found."
 
-    def show_email(self, name):
+    def show_email_book(self, name):
         if name in self.data:
             contact = self.data[name]
             if contact.emails:
@@ -54,7 +54,7 @@ class AddressBook(UserDict):
         else:
             return f"Contact '{name}' not found."
 
-    def show_address(self, name):
+    def show_address_book(self, name):
         if name in self.data:
             contact = self.data[name]
             if contact.address:
@@ -64,7 +64,7 @@ class AddressBook(UserDict):
         else:
             return f"Contact '{name}' not found."
 
-    def show_birthday(self, name):
+    def show_birthday_book(self, name):
         if name in self.data:
             contact = self.data[name]
             if contact.birthday:
@@ -74,7 +74,7 @@ class AddressBook(UserDict):
         else:
             return f"Contact '{name}' not found."
 
-    def delete_contact(self, name):
+    def delete_contact_book(self, name):
         if name in self.data:
             del self.data[name]
             print(f"Contact '{name}' deleted successfully.")
@@ -131,4 +131,3 @@ class AddressBook(UserDict):
         msg.attach(MIMEText(body, 'plain'))
         smtp_server.sendmail(smtp_username, to_email, msg.as_string())
         smtp_server.quit()
-

@@ -35,8 +35,11 @@ class NoteOperationError(Exception):
 
 
 class ValidationException(Exception):
-    def __init__(self, message):
-        self.message = message
+    pass
+
+
+class EmptyFieldsException(Exception):
+    pass
 
 
 def input_error(func):
@@ -67,5 +70,9 @@ def input_error(func):
             return f"Note not found {e}."
         except NoteOperationError as e:
             return f"Note operation error {e}."
+        except EmptyFieldsException as e:
+            return f"Enter at least one field. {e}"
+        except ValidationException as e:
+            return f"Enter at least one field. {e}"
 
     return inner

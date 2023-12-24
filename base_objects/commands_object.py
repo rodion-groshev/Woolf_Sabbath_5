@@ -1,7 +1,7 @@
 import re
 from datetime import datetime
 from base_objects.main_objects import Email
-from utilities.error_handler import input_error, BadPhoneNumber, BadEmailFormat, BadBirthdayFormat
+from utilities.error_handler import input_error, BadPhoneNumber, BadEmailFormat, BadBirthdayFormat, EmptyFieldsException
 from base_objects.record_object import Record, NoteRecord
 from utilities.help_message import help_message
 from utilities.birtday_output import birthday_output
@@ -11,11 +11,13 @@ class Commands:
     @input_error
     def add_contact(self, data, book):
         phone = input("Enter the phone: ")
-        email = input("Enter email: ")
+        email = input("Enter email address: ")
         address = input("Enter the address: ")
         birthday = input("Enter a birthday: ")
         record = Record(data)
 
+        if not phone or email or address or birthday:
+            raise EmptyFieldsException
         if phone:
             record.add_phone(phone)
         if email:
@@ -24,7 +26,8 @@ class Commands:
             record.add_address(address)
         if birthday:
             record.add_birthday(birthday)
-        book.add_contact(record)
+
+        book.add_contact_book(record)
         return f"Contact {data} added successfully."
 
     @input_error
@@ -36,7 +39,7 @@ class Commands:
 
     @input_error
     def add_email(self, name, book):
-        email = input("Enter the phone number: ")
+        email = input("Enter email address: ")
         record = book.find(name)
         email_pattern = re.compile(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
         if not re.match(email_pattern, email):
@@ -53,7 +56,7 @@ class Commands:
 
     @input_error
     def add_birthday(self, name, book):
-        birthday = input("Enter the phone number: ")
+        birthday = input("Enter the birthday: ")
         record = book.find(name)
         try:
             datetime.strptime(birthday, "%d.%m.%Y")
@@ -98,7 +101,7 @@ class Commands:
             record.edit_address(address)
             return "Contact updated."
         else:
-            return "Contact not found"
+            return "Contact not found."
 
     @input_error
     def edit_birthday(self, name, book):
@@ -116,31 +119,31 @@ class Commands:
 
     @input_error
     def show_all(self, book):
-        return book.show_all()
+        return f"All contacts in your AddressBook:\n{book.show_all_book()}"
 
     @input_error
     def show_contact(self, name, book):
-        return book.show_contact(name)
+        return book.show_contact_book(name)
 
     @input_error
     def show_phone(self, name, book):
-        return book.show_phone(name)
+        return f"{name}'s phone(s): {book.show_phone_book(name)}"
 
     @input_error
     def show_email(self, name, book):
-        return book.show_email(name)
+        return book.show_email_book(name)
 
     @input_error
     def show_address(self, name, book):
-        return book.show_address(name)
+        return book.show_address_book(name)
 
     @input_error
     def show_birthday(self, name, book):
-        return book.show_birthday(name)
+        return book.show_birthday_book(name)
 
     @input_error
     def delete_contact(self, name, book):
-        return book.delete_contact(name)
+        return book.delete_contact_book(name)
 
     @input_error
     def delete_phone(self, name, book):
@@ -168,10 +171,7 @@ class Commands:
     def upcoming_birthday(self, days, book):
         birthday_output(book.birthday_func(int(days)))
 
-    @staticmethod
-    def help():
-        return help_message()
-
+    @input_error
     def add_new_note(self, data, notebook):
         note_input = input("Enter the note: ")
         note_record = NoteRecord(data)
@@ -179,17 +179,25 @@ class Commands:
         notebook.add_note(note_record)
         return f"Note {data} added successfully."
 
+    @input_error
     def show_all_notes(self, notebook):
         return notebook.show_all_notes()
 
+    @input_error
     def show_note(self, data, notebook):
         note_record = notebook.find(data)
         return note_record.show_note_by_tag()
 
+    @input_error
     def edit_note(self, data, notebook):
         new_note = input("Enter new note: ")
         note_record = notebook.find(data)
         return note_record.edit_tag_note(new_note)
 
+    @input_error
     def delete_note(self, data, notebook):
         return notebook.delete_note_by_tag(data)
+
+    @staticmethod
+    def help():
+        return help_message()
