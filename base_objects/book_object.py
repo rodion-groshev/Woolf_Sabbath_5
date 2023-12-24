@@ -1,5 +1,8 @@
 from collections import UserDict, defaultdict
 from datetime import datetime
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 
 class AddressBook(UserDict):
@@ -71,7 +74,14 @@ class AddressBook(UserDict):
         else:
             return f"Contact '{name}' not found."
 
-    def upcoming_birthday(self, days):
+    def delete_contact(self, name):
+        if name in self.data:
+            del self.data[name]
+            print(f"Contact '{name}' deleted successfully.")
+        else:
+            print(f"Contact '{name}' not found.")
+
+    def birthday_func(self, days):
         default_dict = defaultdict(list)
         today = datetime.today().date()
 
@@ -79,6 +89,21 @@ class AddressBook(UserDict):
             name = self.data[user].name.value
             birthday = self.data[user].birthday.value
             birthday_this_year = birthday.replace(year=today.year)
+            if birthday_this_year == today:
+                asking = input(f"Today {name}'s birthday {birthday_this_year}. "
+                               f"Do you want to send greeting to {name}? [Y/N]: ")
+                if asking == "Y":
+                    subject = "Happy Birthday"
+                    body = "Happy Birthday! 🎉 Wishing you all the best, health, and happiness!"
+                    if self.data[name].emails:
+                        to_email = ", ".join(email.value for email in self.data[name].emails)
+                        smtp_server = "smtp.gmail.com"
+                        smtp_port = 587
+                        smtp_username = "alreadyexist22@gmail.com"
+                        smtp_password = "qzwd lmlm gibl glan"
+                        self.send_email(subject, body, to_email, smtp_server, smtp_port, smtp_username, smtp_password)
+                    else:
+                        return "You must add email to contact"
 
             if birthday_this_year < today:
                 birthday_this_year = birthday_this_year.replace(year=today.year + 1)
@@ -95,9 +120,15 @@ class AddressBook(UserDict):
 
         return default_dict
 
-    def delete_contact(self, name):
-        if name in self.data:
-            del self.data[name]
-            print(f"Contact '{name}' deleted successfully.")
-        else:
-            print(f"Contact '{name}' not found.")
+    def send_email(self, subject, body, to_email, smtp_server, smtp_port, smtp_username, smtp_password):
+        smtp_server = smtplib.SMTP(smtp_server, smtp_port)
+        smtp_server.starttls()
+        smtp_server.login(smtp_username, smtp_password)
+        msg = MIMEMultipart()
+        msg['From'] = smtp_username
+        msg['To'] = to_email
+        msg['Subject'] = subject
+        msg.attach(MIMEText(body, 'plain'))
+        smtp_server.sendmail(smtp_username, to_email, msg.as_string())
+        smtp_server.quit()
+

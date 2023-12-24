@@ -73,8 +73,9 @@ class Record:
         else:
             raise PhoneNumberIsMissing(phone)
 
-    def delete_email(self, email):
+    def delete_email_record(self, email):
         if email in self.emails:
+            print("Fuck")
             self.emails.remove(email)
         else:
             raise ValidationException(email)

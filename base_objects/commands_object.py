@@ -144,15 +144,15 @@ class Commands:
 
     @input_error
     def delete_phone(self, name, book):
-        phone = input("Enter the new phone number: ")
+        phone = input("Enter the phone number to delete: ")
         record = book.find(name)
         return record.delete_phone(phone)
 
     @input_error
     def delete_email(self, name, book):
-        email = input("Enter the new phone number: ")
+        email = input("Enter the email number to delete: ")
         record = book.find(name)
-        return record.delete_email(email)
+        return record.delete_email_record(email)
 
     @input_error
     def delete_address(self, name, book):
@@ -166,7 +166,7 @@ class Commands:
 
     @input_error
     def upcoming_birthday(self, days, book):
-        birthday_output(book.upcoming_birthday(int(days)), book)
+        birthday_output(book.birthday_func(int(days)))
 
     @staticmethod
     def help():
