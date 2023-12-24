@@ -4,6 +4,8 @@ from rich import box
 
 
 def birthday_output(upcoming_birthdays, book):
+    """Birthday output helper. Prints upcomming birthdays in a table"""
+
     console = Console()
     if upcoming_birthdays:
         table = Table(show_header=True, header_style="bold magenta", box=box.SIMPLE_HEAVY)

@@ -1,45 +1,60 @@
+
+# Definining Exception for validators
+
 class KeyExistInContacts(Exception):
+    """Contacts exception from the validator"""
     pass
 
 
 class KeyNotExistInContacts(Exception):
+    """Invalid contact exception from the validator"""
     pass
 
 
 class BadPhoneNumber(Exception):
+    """Incorrect Phone exception from the validator"""
     pass
 
 
 class PhoneNumberIsMissing(Exception):
+    """Phone missing exception from the validator"""
     pass
 
 
 class BadBirthdayFormat(Exception):
+    """Incorrect Birthday exception from the validator"""
     pass
 
 
 class BadEmailFormat(Exception):
+    """Incorrect E-Mail exception from the validator"""
     pass
 
 
 class NoteExists(Exception):
+    """Note already exist exception from the validator"""
     pass
 
 
 class NoteNotFound(Exception):
+    """Incorrect Note ID exception from the validator"""
     pass
 
 
 class NoteOperationError(Exception):
+    """Incorrect Note operation exception from the validator"""
     pass
 
 
 class ValidationException(Exception):
+    """Validator failed with message exception to notify user"""
     def __init__(self, message):
         self.message = message
 
 
 def input_error(func):
+    """Input decorator to catch user error inputs from the validators"""
+
     def inner(*args, **kwargs):
         try:
             return func(*args, **kwargs)

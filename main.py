@@ -8,6 +8,8 @@ from prompt_toolkit import prompt
 
 
 def main():
+
+    # main instances to save data
     book_data = Storage("temp")
     book = book_data.read_from_disk_contacts()
     notebook_data = Storage("temp_note")
@@ -21,13 +23,17 @@ def main():
     word_completer = WordCompleter(commands, ignore_case=True)
 
     print("Welcome to the assistant bot!")
+
+    # main infinite loop to wait for commands, breaks after exit command
     while True:
         user_input = prompt('Enter the command: ', completer=word_completer,
                             complete_style=CompleteStyle.MULTI_COLUMN)
+        # FIXME: exception if user enter no command and press enter
         command, *args = parse_input(user_input)
         data = " ".join(args)
         class_command = Commands()
 
+        # detect command
         if command == "exit":
             print("Good bye!")
             break

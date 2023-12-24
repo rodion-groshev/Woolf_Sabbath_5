@@ -3,6 +3,8 @@ from rich.table import Table
 
 
 def help_message():
+    """Help message helper. Prints help"""
+
     console = Console()
 
     table = Table(show_header=True, header_style="bold magenta")
