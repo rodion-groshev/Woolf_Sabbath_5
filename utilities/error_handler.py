@@ -21,8 +21,10 @@ class BadBirthdayFormat(Exception):
 class BadEmailFormat(Exception):
     pass
 
+
 class EmailNotFound(Exception):
     pass
+
 
 class NoteExists(Exception):
     pass

@@ -4,8 +4,11 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
+from utilities.color_cmd import Color
+
 
 class AddressBook(UserDict):
+
     def add_contact_book(self, record):
         self.data[record.name.value] = record
 
@@ -82,17 +85,21 @@ class AddressBook(UserDict):
             print(f"Contact '{name}' not found.")
 
     def birthday_func(self, days):
+        color = Color()
         default_dict = defaultdict(list)
         today = datetime.today().date()
 
-        for user in self.data:
-            name = self.data[user].name.value
-            birthday = self.data[user].birthday.value
+        for name, data in self.data.items():
+            try:
+                birthday = data.birthday.value
+            except:
+                continue
             birthday_this_year = birthday.replace(year=today.year)
+            print(birthday)
             if birthday_this_year == today:
                 asking = input(f"Today {name}'s birthday {birthday_this_year}. "
                                f"Do you want to send greeting to {name}? [Y/N]: ")
-                if asking == "Y":
+                if asking.lower() == "y":
                     subject = "Happy Birthday"
                     body = "Happy Birthday! 🎉 Wishing you all the best, health, and happiness!"
                     if self.data[name].emails:
@@ -102,8 +109,9 @@ class AddressBook(UserDict):
                         smtp_username = "alreadyexist22@gmail.com"
                         smtp_password = "qzwd lmlm gibl glan"
                         self.send_email(subject, body, to_email, smtp_server, smtp_port, smtp_username, smtp_password)
+                        color.print_text(f"Congratulations sending to {name} successful")
                     else:
-                        return "You must add email to contact"
+                        color.print_text("You must add email to contact")
 
             if birthday_this_year < today:
                 birthday_this_year = birthday_this_year.replace(year=today.year + 1)
@@ -131,3 +139,4 @@ class AddressBook(UserDict):
         msg.attach(MIMEText(body, 'plain'))
         smtp_server.sendmail(smtp_username, to_email, msg.as_string())
         smtp_server.quit()
+

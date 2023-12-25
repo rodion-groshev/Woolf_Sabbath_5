@@ -1,13 +1,12 @@
 import re
 from datetime import datetime
-from base_objects.main_objects import Email
-from utilities.error_handler import input_error, BadPhoneNumber, BadEmailFormat, BadBirthdayFormat, EmptyFieldsException, ValidationException
+from colorama import Fore
 
+from utilities.error_handler import input_error, BadPhoneNumber, BadEmailFormat, BadBirthdayFormat, \
+    EmptyFieldsException, ValidationException
 from base_objects.record_object import Record, NoteRecord
 from utilities.help_message import help_message
 from utilities.birtday_output import birthday_output
-
-
 
 
 class Commands:
@@ -116,7 +115,7 @@ class Commands:
 
     @input_error
     def show_all(self, book):
-        return f"All contacts in your AddressBook:\n{book.show_all_book()}"
+        return f"All contacts in your AddressBook:\n\n{book.show_all_book()}"
 
     @input_error
     def show_contact(self, name, book):
@@ -170,7 +169,7 @@ class Commands:
             return f"Address deleted for contact {name}."
         else:
             return f"Contact '{name}' not found."
-        
+
     @input_error
     def delete_birthday(self, name, book):
         contact = book.find(name)
@@ -179,7 +178,7 @@ class Commands:
             return f"Birthday deleted for contact {name}."
         else:
             return f"Contact '{name}' not found."
-        
+
     @input_error
     def upcoming_birthday(self, days, book):
         birthday_output(book.birthday_func(int(days)))
@@ -214,3 +213,25 @@ class Commands:
     @staticmethod
     def help():
         return help_message()
+
+    @input_error
+    def change_bot_color(self, data,  color):
+        if data == "blue":
+            color.set_current_color(Fore.BLUE)
+        elif data == "red":
+            color.set_current_color(Fore.RED)
+        elif data == "green":
+            color.set_current_color(Fore.GREEN)
+        elif data == "yellow":
+            color.set_current_color(Fore.YELLOW)
+        elif data == "cyan":
+            color.set_current_color(Fore.CYAN)
+        elif data == "magenta":
+            color.set_current_color(Fore.MAGENTA)
+        elif data == "white":
+            color.set_current_color(Fore.WHITE)
+        else:
+            raise ValueError
+        return f"Changing color to: {data}"
+
+

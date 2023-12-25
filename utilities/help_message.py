@@ -60,6 +60,8 @@ def help_message():
          "Display one note"),
         ("help",
          "All possible commands"),
+        ("change-color <color>\nAvailable colors: red, blue, green, yellow, cyan, magenta, white",
+         "Change text color"),
     ]
 
     for i, (left_part, right_part) in enumerate(commands_info):
