@@ -138,4 +138,3 @@ class AddressBook(UserDict):
         msg.attach(MIMEText(body, 'plain'))
         smtp_server.sendmail(smtp_username, to_email, msg.as_string())
         smtp_server.quit()
-

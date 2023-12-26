@@ -2,6 +2,7 @@ from rich.console import Console
 from rich.table import Table
 from rich.text import Text
 
+
 def help_message():
     console = Console()
 
@@ -50,7 +51,7 @@ def help_message():
          "Delete address in contact"),
         ("add-note <note>",
          "Add new note to notebook"),
-        ("show_all_notes", 
+        ("show_all_notes",
          "Show every notes total saved before"),
         ("delete-note <name>",
          "Delete note that saved"),
@@ -67,10 +68,10 @@ def help_message():
     for i, (left_part, right_part) in enumerate(commands_info):
         formatted_left = Text.from_markup(f"[bold green]{left_part}[/bold green]")
         formatted_right = Text.from_markup(f"[bold red]{right_part}[/bold red]")
-        
-        if i != 0: 
+
+        if i != 0:
             table.add_row("-" * 50, "-" * 25)
-        
+
         table.add_row(formatted_left, formatted_right)
 
     console.print(table)
