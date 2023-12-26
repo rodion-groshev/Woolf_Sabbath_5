@@ -12,22 +12,22 @@ from utilities.birtday_output import birthday_output
 class Commands:
     @input_error
     def add_contact(self, data, book):
-        phone = input("Enter the phone: ")
-        email = input("Enter email address: ")
-        address = input("Enter the address: ")
-        birthday = input("Enter a birthday: ")
         record = Record(data)
+        phone = input("Enter the phone: ")
+        if phone:
+            record.add_phone_record(phone)
+        email = input("Enter email address: ")
+        if email:
+            record.add_email_record(email)
+        address = input("Enter the address: ")
+        if address:
+            record.add_address_record(address)
+        birthday = input("Enter a birthday: ")
+        if birthday:
+            record.add_birthday_record(birthday)
 
         if not phone and not email and not address and not birthday:
             raise EmptyFieldsException
-        if phone:
-            record.add_phone_record(phone)
-        if email:
-            record.add_email_record(email)
-        if address:
-            record.add_address_record(address)
-        if birthday:
-            record.add_birthday_record(birthday)
 
         book.add_contact_book(record)
         return f"Contact {data} added successfully."
@@ -215,7 +215,7 @@ class Commands:
         return help_message()
 
     @input_error
-    def change_bot_color(self, data,  color):
+    def change_bot_color(self, data, color):
         if data == "blue":
             color.set_current_color(Fore.BLUE)
         elif data == "red":
@@ -233,5 +233,3 @@ class Commands:
         else:
             raise ValueError
         return f"Changing color to: {data}"
-
-

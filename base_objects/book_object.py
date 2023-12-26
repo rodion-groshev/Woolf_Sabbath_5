@@ -80,9 +80,9 @@ class AddressBook(UserDict):
     def delete_contact_book(self, name):
         if name in self.data:
             del self.data[name]
-            print(f"Contact '{name}' deleted successfully.")
+            return f"Contact '{name}' deleted successfully."
         else:
-            print(f"Contact '{name}' not found.")
+            return f"Contact '{name}' not found."
 
     def birthday_func(self, days):
         color = Color()
@@ -95,7 +95,6 @@ class AddressBook(UserDict):
             except:
                 continue
             birthday_this_year = birthday.replace(year=today.year)
-            print(birthday)
             if birthday_this_year == today:
                 asking = input(f"Today {name}'s birthday {birthday_this_year}. "
                                f"Do you want to send greeting to {name}? [Y/N]: ")

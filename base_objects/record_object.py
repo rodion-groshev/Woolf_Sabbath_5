@@ -1,6 +1,7 @@
 from datetime import datetime
-import re
-from utilities.error_handler import BadEmailFormat, BadPhoneNumber, EmailNotFound, PhoneNumberIsMissing, ValidationException, BadBirthdayFormat
+
+from utilities.error_handler import BadEmailFormat, BadPhoneNumber, EmailNotFound, PhoneNumberIsMissing, \
+    ValidationException, BadBirthdayFormat
 from base_objects.main_objects import Name, Phone, Field, Birthday, Email, Address, Tag, Note
 
 
@@ -75,7 +76,6 @@ class Record:
             self.phones = [phone_obj for phone_obj in self.phones if str(phone_obj) != phone]
         else:
             raise PhoneNumberIsMissing(phone)
-
 
     def delete_email_record(self, email):
         if email in [str(email_obj) for email_obj in self.emails]:
