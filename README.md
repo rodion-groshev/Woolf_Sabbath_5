@@ -17,6 +17,7 @@ It allows you to:
   - Find needed information
   - Edit all needed details
   - Send congratulations by email
+  - Change color of the text
 
 ## Installation
 
@@ -24,13 +25,14 @@ The application is written in Python language and requires Python version 3 or g
 
 You can install the application via pip to your local machine (for Mac use pip3 command):
 ```sh
-pip install pip install woolf-sabbat-5 *(check newest version)
+pip install woolf-sabbat-5 *(check newest version)
 ```
 
 The application also requires the following libraries to be installed:
 ```sh
 pip install prompt-toolkit
 pip install rich
+pip install colorama
 ```
 
 Get application sources:

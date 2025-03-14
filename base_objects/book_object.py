@@ -4,17 +4,26 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
+from utilities.color_cmd import Color
+from utilities.error_handler import (KeyExistInContacts, EmptyNameFormat, EmptyPhonesStorage, EmptyAddressBook,
+                                     EmptyEmailStorage, EmptyAddressStorage, EmptyBirthdayStorage)
+
 
 class AddressBook(UserDict):
+
     def add_contact_book(self, record):
-        self.data[record.name.value] = record
+        if record.name.value not in self.data:
+            self.data[record.name.value] = record
+        else:
+            raise KeyExistInContacts(record.name.value)
 
     def find(self, name):
+        if name == "":
+            raise EmptyNameFormat
         return self.data[name]
 
     def show_all_book(self):
         if self.data:
-
             return "\n".join(
                 f"{name} - "
                 f"Phone(s): {', '.join([phone.value for phone in value.phones])}, "
@@ -23,76 +32,61 @@ class AddressBook(UserDict):
                 f"Birthday: {value.birthday if value.birthday is not None else ''}"
                 for name, value in self.data.items())
         else:
-            return "No contacts in the address book."
+            raise EmptyAddressBook
 
     def show_contact_book(self, name):
-        if name in self.data:
-            contact = self.data[name]
-            return (f"\n{name}:\nPhone(s): {', '.join([phone.value for phone in contact.phones])}, "
-                    f"E-mail(s): {', '.join([email.value for email in contact.emails if email != []])}, "
-                    f"Address: {contact.address}, Birthday: {contact.birthday}")
-        else:
-            return f"Contact '{name}' not found."
+        contact = self.find(name)
+        return (f"\n{name}:\nPhone(s): {', '.join([phone.value for phone in contact.phones])}, "
+                f"E-mail(s): {', '.join([email.value for email in contact.emails if email != []])}, "
+                f"Address: {contact.address}, Birthday: {contact.birthday}")
 
     def show_phone_book(self, name):
-        if name in self.data:
-            contact = self.data[name]
-            if contact.phones:
-                return ', '.join([phone.value for phone in contact.phones])
-            else:
-                return f"{name} has no phone numbers."
+        contact = self.find(name)
+        if contact.phones:
+            return ', '.join([phone.value for phone in contact.phones])
         else:
-            return f"Contact '{name}' not found."
+            raise EmptyPhonesStorage
 
     def show_email_book(self, name):
-        if name in self.data:
-            contact = self.data[name]
-            if contact.emails:
-                return f"{name}'s e-mail(s): {', '.join([email.value for email in contact.emails if email != []])}"
-            else:
-                return f"{name} has no email address."
+        contact = self.find(name)
+        if contact.emails:
+            return f"{name}'s e-mail(s): {', '.join([email.value for email in contact.emails if email != []])}"
         else:
-            return f"Contact '{name}' not found."
+            raise EmptyEmailStorage
 
     def show_address_book(self, name):
-        if name in self.data:
-            contact = self.data[name]
-            if contact.address:
-                return f"\n{name}'s Address:\n{contact.address}"
-            else:
-                return f"{name} has no address."
+        contact = self.find(name)
+        if contact.address:
+            return f"\n{name}'s Address:\n{contact.address}"
         else:
-            return f"Contact '{name}' not found."
+            raise EmptyAddressStorage
 
     def show_birthday_book(self, name):
-        if name in self.data:
-            contact = self.data[name]
-            if contact.birthday:
-                return f"\n{name}'s Birthday:\n{contact.birthday}"
-            else:
-                return f"{name} has no birthday."
+        contact = self.find(name)
+        if contact.birthday:
+            return f"\n{name}'s Birthday:\n{contact.birthday}"
         else:
-            return f"Contact '{name}' not found."
+            raise EmptyBirthdayStorage
 
     def delete_contact_book(self, name):
-        if name in self.data:
-            del self.data[name]
-            print(f"Contact '{name}' deleted successfully.")
-        else:
-            print(f"Contact '{name}' not found.")
+        del self.data[name]
+        return f"Contact '{name}' deleted successfully."
 
     def birthday_func(self, days):
+        color = Color()
         default_dict = defaultdict(list)
         today = datetime.today().date()
 
-        for user in self.data:
-            name = self.data[user].name.value
-            birthday = self.data[user].birthday.value
+        for name, data in self.data.items():
+            try:
+                birthday = data.birthday.value
+            except:
+                continue
             birthday_this_year = birthday.replace(year=today.year)
             if birthday_this_year == today:
-                asking = input(f"Today {name}'s birthday {birthday_this_year}. "
+                is_send_message = input(f"Today {name}'s birthday {birthday_this_year}. "
                                f"Do you want to send greeting to {name}? [Y/N]: ")
-                if asking == "Y":
+                if is_send_message.lower() == "y":
                     subject = "Happy Birthday"
                     body = "Happy Birthday! 🎉 Wishing you all the best, health, and happiness!"
                     if self.data[name].emails:
@@ -102,8 +96,9 @@ class AddressBook(UserDict):
                         smtp_username = "alreadyexist22@gmail.com"
                         smtp_password = "qzwd lmlm gibl glan"
                         self.send_email(subject, body, to_email, smtp_server, smtp_port, smtp_username, smtp_password)
+                        color.print_text(f"Congratulations sending to {name} successful")
                     else:
-                        return "You must add email to contact"
+                        color.print_text("You must add email to contact")
 
             if birthday_this_year < today:
                 birthday_this_year = birthday_this_year.replace(year=today.year + 1)
