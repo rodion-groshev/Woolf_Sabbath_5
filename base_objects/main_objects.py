@@ -1,6 +1,6 @@
 import re
 from datetime import datetime
-from utilities.error_handler import BadPhoneNumber
+from utilities.error_handler import BadPhoneNumber, BadEmailFormat, EmptyNameFormat
 
 
 class Field:
@@ -13,6 +13,8 @@ class Field:
 
 class Name(Field):
     def __init__(self, name):
+        if name == "":
+            raise EmptyNameFormat
         super().__init__(name)
 
 
@@ -26,9 +28,6 @@ class Note(Field):
         super().__init__(value)
 
 
-# ADD VALIDATION
-
-
 class Phone(Field):
     def __init__(self, value):
         super().__init__(value)
@@ -36,7 +35,7 @@ class Phone(Field):
             raise BadPhoneNumber(value)
 
     def validate_phone(self):
-        phone_pattern = re.compile(r'^\+38\d{9,10}$')
+        phone_pattern = re.compile(r"^\+38\d{9,10}$")
         return bool(re.match(phone_pattern, self.value))
 
 
@@ -44,7 +43,7 @@ class Email(Field):
     def __init__(self, email):
         super().__init__(email)
         if not self.validate_email():
-            raise ValueError("Invalid email format.")
+            raise BadEmailFormat(email)
 
     def validate_email(self):
         pattern = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"

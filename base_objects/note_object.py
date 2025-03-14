@@ -12,9 +12,9 @@ class NoteBook(UserDict):
         if self.data:
             print("\nAll Notes:")
             return "\n".join(
-                f"{tag} - "
-                f"Note: {record_note.note_memory.value}"
-                for tag, record_note in self.data.items())
+                f"{tag} - " f"Note: {record_note.note_memory.value}"
+                for tag, record_note in self.data.items()
+            )
         else:
             return "No tag in the notebook book."
 

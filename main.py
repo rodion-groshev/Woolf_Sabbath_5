@@ -16,21 +16,57 @@ def main():
     notebook = notebook_data.read_from_disk_notes()
 
     # List of available commands
-    commands = ["add-contact", "add-phone", "add-email", "add-address", "add-birthday", "add-note", "edit-phone",
-                "edit-email", "edit-address", "edit-birthday", "edit-note", "delete-note", "show-all", "show-notes",
-                "show-contact", "show-phone", "show-email", "show-address", "show-birthday", "show-note",
-                "delete-contact", "delete-phone", "delete-email", "delete-address", "delete-birthday", "birthday",
-                "exit", "help", "change-color"]
+    commands = [
+        "add-contact",
+        "add-phone",
+        "add-email",
+        "add-address",
+        "add-birthday",
+        "add-note",
+        "edit-phone",
+        "edit-email",
+        "edit-address",
+        "edit-birthday",
+        "edit-note",
+        "delete-note",
+        "show-all",
+        "show-notes",
+        "show-contact",
+        "show-phone",
+        "show-email",
+        "show-address",
+        "show-birthday",
+        "show-note",
+        "delete-contact",
+        "delete-phone",
+        "delete-email",
+        "delete-address",
+        "delete-birthday",
+        "birthday",
+        "exit",
+        "help",
+        "change-color",
+    ]
     word_completer = WordCompleter(commands, ignore_case=True)
     color = Color()
 
-    color.print_text("\t\t\t\t\t\t\t******************************************************\n")
-    color.print_text("\t\t\t\t\t\t\t*       Welcome to your personal Assistant Bot!      *\n")
-    color.print_text("\t\t\t\t\t\t\t******************************************************\n")
+    color.print_text(
+        "\t\t\t\t\t\t\t******************************************************\n"
+    )
+    color.print_text(
+        "\t\t\t\t\t\t\t*       Welcome to your personal Assistant Bot!      *\n"
+    )
+    color.print_text(
+        "\t\t\t\t\t\t\t******************************************************\n"
+    )
+
     while True:
         # Input from the user
-        user_input = prompt(color.print_text('\n---> Enter the command: '), completer=word_completer,
-                            complete_style=CompleteStyle.MULTI_COLUMN)
+        user_input = prompt(
+            color.print_text("\n---> Enter the command: "),
+            completer=word_completer,
+            complete_style=CompleteStyle.MULTI_COLUMN,
+        )
         command, *args = parse_input(user_input)
         data = " ".join(args)
         class_command = Commands()
@@ -96,7 +132,7 @@ def main():
             color.print_text(class_command.change_bot_color(data, color))
         else:
             color.print_text(f"Invalid command {command}.")
-    # Completing input and saving data before exit
+
     book_data.save_to_disk(book)
     notebook_data.save_to_disk(notebook)
 
